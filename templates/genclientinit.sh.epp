@@ -1,0 +1,74 @@
+#!/bin/bash
+
+certname=$1
+cflocation=$2
+cflocationpool=$3
+http_proxy=$4
+
+if test -z "$certname"; then
+    echo "Usage: ./genclientinit.sh <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]]"
+    exit 1
+fi
+
+cat <<EOAT
+bash <<EOT
+#!/bin/bash
+
+http_proxy=$http_proxy
+
+if test "\\\$(id -un)" != 'root'; then
+    echo 'This script must run as root'
+    exit 1
+fi
+
+if test ! -z "$cflocation"; then
+    echo -n $cflocation >/etc/cflocation
+fi
+if test ! -z "$cflocationpool"; then
+    echo -n $cflocationpool >/etc/cflocationpool
+fi
+
+if test ! -z "\\\$http_proxy"; then
+    export http_proxy
+    export https_proxy="\\\$http_proxy"
+    export HTTP_PROXY="\\\$http_proxy"
+    export HTTPS_PROXY="\\\$http_proxy"
+fi
+
+echo $certname > /etc/hostname
+hostname $certname
+
+if ! which lsb-release | read; then
+    apt-get install lsb-release
+fi
+
+codename=\\\$(lsb_release -cs)
+
+if test -z "\\\$codename"; then
+    echo "Failed to detect correct codename"
+    exit 1
+fi
+
+wget https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb
+dpkg -i puppetlabs-release-pc1-\\\${codename}.deb
+
+mkdir -p /etc/puppetlabs/puppet
+
+cat > /etc/puppetlabs/puppet/puppet.conf <<EOF
+[main]
+certname = $certname
+server = <%= $puppet_host %>
+environment = production
+EOF
+
+apt-get update &&
+    apt-get install puppet-agent
+
+while ! /opt/puppetlabs/bin/puppet agent --test --wairforcert 120; do
+    echo "Please go to puppetserver and exec the following command when we wait for key"
+    echo "> puppet cert sign $certname"
+    echo "Use CTRL+C to stop cycle, if fails due to different reasons"
+    sleep 5
+done
+EOT
+EOAT
