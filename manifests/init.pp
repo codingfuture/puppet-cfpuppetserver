@@ -35,7 +35,7 @@ class cfpuppetserver (
     } elsif $puppetdb {
         cfnetwork::client_port { 'any:puppetdb':
             user => 'puppet',
-            dst => $puppetdb,
+            dst  => $puppetdb,
         }
     } else {
         fail('$puppetdb must be either true or a destination host')
@@ -51,30 +51,30 @@ class cfpuppetserver (
         
         group { $deployuser: ensure => present }
         user { $deployuser:
-            ensure => present,
-            groups => ['ssh_access'],
-            home => "/home/${deployuser}",
-            managehome => true,
+            ensure         => present,
+            groups         => ['ssh_access'],
+            home           => "/home/${deployuser}",
+            managehome     => true,
             purge_ssh_keys => true,
-            membership => inclusive,
-            require => Group['ssh_access'],
+            membership     => inclusive,
+            require        => Group['ssh_access'],
         }
 
         $deploycmd = '/opt/puppetlabs/puppet/bin/r10k deploy environment -p'
         
         file {"/home/${deployuser}/puppetdeploy.sh":
-            owner => $deployuser,
-            group => $deployuser,
-            mode => '0750',
+            owner   => $deployuser,
+            group   => $deployuser,
+            mode    => '0750',
             content => "#!/bin/sh
 sudo ${deploycmd}
 "
         }
         
         file {"/etc/sudoers.d/${deployuser}":
-            group => root,
-            owner => root,
-            mode => '0400',
+            group   => root,
+            owner   => root,
+            mode    => '0400',
             content => "
 ${deployuser} ALL=(ALL:ALL) NOPASSWD: ${deploycmd}
 ",
@@ -95,12 +95,12 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: ${deploycmd}
     
     if $puppet_git_host {
         cfnetwork::client_port { 'any:ssh:puppetvcs':
-            dst => $puppet_git_host,
-            user => 'root',
+            dst     => $puppet_git_host,
+            user    => 'root',
             comment => 'Puppet config git access'
         }
         cfnetwork::service_port { 'any:ssh:puppetvcs':
-            src => $puppet_git_host,
+            src     => $puppet_git_host,
             comment => 'Puppet config git deploy access'
         }
     }
@@ -110,9 +110,9 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: ${deploycmd}
     file {'/root/initclient.sh': ensure => absent}
 
     file {'/root/genclientinit.sh':
-        owner => root,
-        group => root,
-        mode => '0750',
+        owner   => root,
+        group   => root,
+        mode    => '0750',
         content => epp('cfpuppetserver/genclientinit.sh.epp', {
             puppet_host => $puppet_host
         }),
