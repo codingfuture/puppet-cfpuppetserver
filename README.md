@@ -22,6 +22,11 @@ Either do manually (preferred for self-education) or use bundled [setup script](
 Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]
 ```
 
+# Examples
+
+Please check [codingufuture/puppet-test](https://github.com/codingfuture/puppet-test) for
+example of a complete infrastructure configuration and Vagrant provisioning.
+
 ### Config for Puppet Server node
 
 If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
