@@ -14,6 +14,16 @@ Usage: ./genclientinit.sh <certname> [<cflocation> [<cflocationpool> [<http_prox
 
 ## Setup
 
+### Initial Puppet Server infrastructure
+
+Either do manually (preferred for self-education) or use bundled [setup script](https://github.com/codingfuture/puppet-cfpuppetserver/blob/master/setup_puppetserver.sh):
+```
+~# ./setup_puppetserver.sh
+Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]
+```
+
+### Config for Puppet Server node
+
 If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
 sure to have the following lines in Puppetfile:
 

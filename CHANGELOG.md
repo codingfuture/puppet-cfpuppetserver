@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.1.2]
 
 - Added hiera.yaml version 4 support
+- Added Puppt Server infrastructure initialization script
 
 ## [0.1.1]
 
