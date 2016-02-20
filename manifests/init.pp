@@ -10,13 +10,49 @@ class cfpuppetserver (
     $setup_postgresql = true,
     
     $service_face = 'any',
-    $puppetserver_mem = cfpuppetserver::params::puppetserver_mem,
-    $puppetdb_mem = cfpuppetserver::params::puppetdb_mem,
-    $puppetsql_mem = cfpuppetserver::params::puppetsql_mem,
-) inherits cfpuppetserver::params {
+    $puppetserver_mem = undef,
+    $puppetdb_mem = undef,
+    $puppetsql_mem = undef,
+) {
     include stdlib
     include cfnetwork
     include cfsystem
+    
+    #---
+    $mem_bytes = $::memory['system']['total_bytes']
+    $mem_mb = $mem_bytes / 1024 / 1024
+    $heap_mb = $mem_mb * 3 / 4 # reserve 25% of mem
+    
+    if is_bool($puppetdb) and $puppetdb {
+        if $puppetserver and $setup_postgresql {
+            $def_puppetdb_mem = $heap_mb / 3
+            $def_puppetserver_mem = $def_puppetdb_mem
+            $def_puppetsql_mem = $def_puppetdb_mem
+        } elsif $puppetserver {
+            $def_puppetdb_mem = $heap_mb / 2
+            $def_puppetserver_mem = $def_puppetdb_mem
+            $def_puppetsql_mem = 0
+        } elsif $setup_postgresql {
+            $def_puppetdb_mem = $heap_mb / 2
+            $def_puppetserver_mem = 0
+            $def_puppetsql_mem = $def_puppetdb_mem
+        } else {
+            $def_puppetdb_mem = $heap_mb
+            $def_puppetserver_mem = 0
+            $def_puppetsql_mem = 0
+        }
+    } elsif $puppetserver {
+        $def_puppetdb_mem = 0
+        $def_puppetserver_mem = $heap_mb
+        $def_puppetsql_mem = 0
+    } else {
+        fail( 'At least one of $puppetserver or $puppetdb must be true' )
+    }
+    
+    $act_puppetserver_mem = pick($puppetserver_mem, $def_puppetdb_mem)
+    $act_puppetdb_mem = pick($puppetdb_mem, $def_puppetserver_mem)
+    $act_puppetsql_mem = pick($puppetsql_mem, $def_puppetsql_mem)
+
     include cfpuppetserver::puppetdb
     include cfpuppetserver::puppetserver
     

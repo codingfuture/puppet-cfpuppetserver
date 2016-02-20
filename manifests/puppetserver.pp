@@ -1,5 +1,7 @@
 
 class cfpuppetserver::puppetserver {
+    assert_private();
+
     $deployuser = $cfpuppetserver::deployuser
     $deployuser_auth_keys = $cfpuppetserver::deployuser_auth_keys
     $puppet_git_host = $cfpuppetserver::puppet_git_host

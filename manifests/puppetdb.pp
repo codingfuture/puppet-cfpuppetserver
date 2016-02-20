@@ -1,9 +1,11 @@
 
 class cfpuppetserver::puppetdb (
     $puppetdb_port = 8081,
-    $postgresql_host = '127.0.0.1',
+    $postgresql_host = 'localhost',
     $postgresql_port = 5432,
 ) {
+    assert_private();
+    
     $puppetdb = $cfpuppetserver::puppetdb
     $puppetsever = $cfpuppetserver::puppetsever
     $puppet_host = $cfpuppetserver::puppet_host
@@ -16,21 +18,16 @@ class cfpuppetserver::puppetdb (
         # postgreSQL
         #---
         if $setup_postgresql {
-            class { 'puppetdb::database::postgresql':
-                listen_addresses => $postgresql_host,
-                database_port    => $postgresql_port,
-                manage_firewall  => false,
+            class { 'cfpuppetserver::puppetdb::postgresql':
+                stage => 'setup'
             }
             
-            postgresql::server::config_entry { 'shared_buffers':
-                value => "${cfpuppetserver::puppetsql_mem}MB",
-            }
-
             cfnetwork::service_port { 'local:puppetpsql': }
         }
 
-        if $postgresql_host == '127.0.0.1' {
-            cfnetwork::client_port { 'local:puppetpsql': user => 'puppetdb' }
+        if $postgresql_host == 'localhost' {
+            cfnetwork::client_port { 'local:puppetpsql':
+                user => ['root', 'puppetdb'] }
         }
 
         # PuppetDB
@@ -40,8 +37,8 @@ class cfpuppetserver::puppetdb (
             database_port   => $postgresql_port,
             manage_firewall => false,
             java_args       => {
-                '-Xmx' => "${cfpuppetserver::puppetdb_mem}m",
-                '-Xms' => "${cfpuppetserver::puppetdb_mem}m",
+                '-Xmx' => "${cfpuppetserver::act_puppetdb_mem}m",
+                '-Xms' => "${cfpuppetserver::act_puppetdb_mem}m",
             },
         }
         
