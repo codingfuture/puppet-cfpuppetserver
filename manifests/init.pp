@@ -3,20 +3,41 @@ class cfpuppetserver (
     $puppet_host,
     $deployuser = 'deploypuppet',
     $deployuser_auth_keys = undef,
-    $puppet_git_host = undef,
+    $repo_url = undef,
     
     $puppetserver = true,
     $puppetdb = true,
+    $puppetdb_port = 8081,
     $setup_postgresql = true,
     
     $service_face = 'any',
     $puppetserver_mem = undef,
     $puppetdb_mem = undef,
     $puppetsql_mem = undef,
+    
+    # deprecated
+    $puppet_git_host = undef,
 ) {
     include stdlib
     include cfnetwork
     include cfsystem
+    
+    #---
+    if $puppet_git_host {
+        warning( '$puppet_git_host is deprecated, use $repo_url')
+        $puppet_git_host_parsed = $puppet_git_host
+    }
+    
+    if $repo_url {
+        $repo_url_parsed = cfpuppetserver_uriparse($repo_url)
+        
+        if $repo_url_parsed {
+            $puppet_git_host_parsed = $repo_url_parsed['host']
+        } else {
+            fail("Failed to parse \$repo_url='$repo_url'")
+        }
+    }
+    
     
     #---
     $mem_bytes = $::memory['system']['total_bytes']

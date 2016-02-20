@@ -187,7 +187,7 @@ EOCONF
 
 /opt/puppetlabs/puppet/bin/gem install r10k
 /opt/puppetlabs/puppet/bin/gem install deep_merge
-puppetserver gem install deep_merge
+
 #/opt/puppetlabs/puppet/bin/r10k deploy environment -p
 service puppetdb restart
 service puppetserver restart

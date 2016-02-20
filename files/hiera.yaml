@@ -1,0 +1,15 @@
+---
+:backends:
+  - yaml
+:hierarchy:
+  - "%{trusted.domain}/%{trusted.hostname}"
+  - "%{trusted.domain}"
+  - "%{facts.cf_location}/%{facts.cf_location_pool}"
+  - "%{facts.cf_location}"
+  - common
+:merge_behavior: deeper
+:yaml:
+  # Make sure to use hiera.yaml in environments
+  #:datadir: /etc/puppetlabs/code/hieradata
+  # Per-environment hiera.yaml is still buggy
+  :datadir: "/etc/puppetlabs/code/environments/%{::environment}/data"

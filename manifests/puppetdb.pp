@@ -1,6 +1,5 @@
 
 class cfpuppetserver::puppetdb (
-    $puppetdb_port = 8081,
     $postgresql_host = 'localhost',
     $postgresql_port = 5432,
 ) {
@@ -11,7 +10,7 @@ class cfpuppetserver::puppetdb (
     $puppet_host = $cfpuppetserver::puppet_host
     $setup_postgresql = $cfpuppetserver::setup_postgresql
     
-    cfnetwork::describe_service {'puppetdb': server => "tcp/${puppetdb_port}"}
+    cfnetwork::describe_service {'puppetdb': server => "tcp/${cfpuppetserver::puppetdb_port}"}
     cfnetwork::describe_service {'puppetpsql': server => "tcp/${postgresql_port}"}
 
     if is_bool($puppetdb) and $puppetdb {
@@ -43,7 +42,8 @@ class cfpuppetserver::puppetdb (
         }
         
         cfnetwork::service_port { 'local:puppetdb': }
-        cfnetwork::client_port { 'local:puppetdb': user => 'puppet' }
+        cfnetwork::client_port { 'local:puppetdb':
+            user => ['root', 'puppet'] }
         
         if !$puppetsever {
             cfnetwork::service_port {
@@ -53,7 +53,7 @@ class cfpuppetserver::puppetdb (
         }
     } elsif $puppetdb {
         cfnetwork::client_port { 'any:puppetdb':
-            user => 'puppet',
+            user => ['root', 'puppet'],
             dst  => $puppetdb,
         }
     } else {
