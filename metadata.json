@@ -1,6 +1,6 @@
 {
   "name": "codingfuture-cfpuppetserver",
-  "version": "0.1.2",
+  "version": "v0.9.0",
   "author": "Andrey Galkin",
   "summary": "Post-setup configuration to live in peace with cfnetwork and cfsystem modules",
   "license": "Apache-2.0",
