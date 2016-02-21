@@ -12,7 +12,7 @@ rundir = /var/run/puppetlabs/puppetserver
 pidfile = /var/run/puppetlabs/puppetserver/puppetserver.pid
 codedir = /etc/puppetlabs/code
 
-<% if $autosign { -%>
+<% if $cfpuppetserver::puppetserver::autosign { -%>
 # !!! NOT FOR PRODUCTION !!!
 autosign = true
 <% } -%>

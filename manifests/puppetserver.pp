@@ -71,9 +71,7 @@ class cfpuppetserver::puppetserver (
             owner   => 'root',
             group   => 'root',
             mode    => '0750',
-            content => epp('cfpuppetserver/r10k.yaml.epp', {
-                repourl => $cfnetwork::repo_url,
-            }),
+            content => epp('cfpuppetserver/r10k.yaml.epp'),
             require => Package['r10k'],
         }
         

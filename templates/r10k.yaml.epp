@@ -5,5 +5,5 @@
 # A list of git repositories to create
 :sources:
   :conf:
-    remote: '<%= $repo_url %>'
+    remote: '<%= $cfpuppetserver::repo_url %>'
     basedir: '/etc/puppetlabs/code/environments'
