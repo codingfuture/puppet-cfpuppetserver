@@ -1,6 +1,7 @@
 
 class cfpuppetserver::puppetserver (
     $autosign = false,
+    $global_hiera_config = 'cfpuppetserver/hiera.yaml',
 ) {
     assert_private();
 
@@ -31,7 +32,7 @@ class cfpuppetserver::puppetserver (
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
-            content => file('cfpuppetserver/hiera.yaml'),
+            content => file($global_hiera_config),
         }
         
         package { 'puppetserver': }
