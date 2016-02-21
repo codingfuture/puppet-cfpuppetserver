@@ -34,7 +34,7 @@ class cfpuppetserver (
         if $repo_url_parsed {
             $puppet_git_host_parsed = $repo_url_parsed['host']
         } else {
-            fail("Failed to parse \$repo_url='$repo_url'")
+            fail("Failed to parse \$repo_url='${repo_url}'")
         }
     }
     
