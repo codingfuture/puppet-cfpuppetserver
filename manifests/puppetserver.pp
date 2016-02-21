@@ -38,6 +38,7 @@ class cfpuppetserver::puppetserver (
         package { 'puppet-agent': }
         cfnetwork::service_port { "${cfpuppetserver::service_face}:puppet": }
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
+        cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
         
         $java_args="-Xms${cfpuppetserver::act_puppetserver_mem}m -Xmx${cfpuppetserver::act_puppetserver_mem}m"
         file_line { 'puppetsever_memlimit':

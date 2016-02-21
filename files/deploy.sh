@@ -7,3 +7,5 @@ for penv in /etc/puppetlabs/code/environments/*; do
     /opt/puppetlabs/puppet/bin/librarian-puppet install
     popd
 done
+
+chown -R puppet:puppet /etc/puppetlabs/code/environments/
