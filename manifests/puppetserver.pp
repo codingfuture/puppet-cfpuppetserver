@@ -45,7 +45,7 @@ class cfpuppetserver::puppetserver (
             ensure  => present,
             path    => '/etc/default/puppetserver',
             line    => "JAVA_ARGS=\"${java_args}\"",
-            match   => "JAVA_ARGS=",
+            match   => 'JAVA_ARGS=',
             replace => true,
             notify  => Service['puppetserver'],
         }
@@ -64,7 +64,7 @@ class cfpuppetserver::puppetserver (
         package {'librarian-puppet':
             provider => 'puppet_gem',
             # wokraround for https://github.com/rodjek/librarian-puppet/issues/330
-            require => Package['activesupport'],
+            require  => Package['activesupport'],
         }
         
         file {'/etc/puppetlabs/r10k/r10k.yaml':
