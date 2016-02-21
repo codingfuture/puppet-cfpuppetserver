@@ -8,6 +8,6 @@ class cfpuppetserver::puppetdb::postgresql {
     class { 'postgresql::client': }
     
     postgresql::server::config_entry { 'shared_buffers':
-        value => "${cfpuppetserver::act_puppetsql_mem}MB",
+        value => "${cfpuppetserver::act_postgresql_mem}MB",
     }
 }

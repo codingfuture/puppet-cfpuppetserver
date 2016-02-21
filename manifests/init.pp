@@ -1,6 +1,6 @@
 
 class cfpuppetserver (
-    $puppet_host,
+    $puppet_host = $::trusted['certname'],
     $deployuser = 'deploypuppet',
     $deployuser_auth_keys = undef,
     $repo_url = undef,
@@ -13,7 +13,7 @@ class cfpuppetserver (
     $service_face = 'any',
     $puppetserver_mem = undef,
     $puppetdb_mem = undef,
-    $puppetsql_mem = undef,
+    $postgresql_mem = undef,
     
     # deprecated
     $puppet_git_host = undef,
@@ -48,31 +48,31 @@ class cfpuppetserver (
         if $puppetserver and $setup_postgresql {
             $def_puppetdb_mem = $heap_mb / 3
             $def_puppetserver_mem = $def_puppetdb_mem
-            $def_puppetsql_mem = $def_puppetdb_mem
+            $def_postgresql_mem = $def_puppetdb_mem
         } elsif $puppetserver {
             $def_puppetdb_mem = $heap_mb / 2
             $def_puppetserver_mem = $def_puppetdb_mem
-            $def_puppetsql_mem = 0
+            $def_postgresql_mem = 0
         } elsif $setup_postgresql {
             $def_puppetdb_mem = $heap_mb / 2
             $def_puppetserver_mem = 0
-            $def_puppetsql_mem = $def_puppetdb_mem
+            $def_postgresql_mem = $def_puppetdb_mem
         } else {
             $def_puppetdb_mem = $heap_mb
             $def_puppetserver_mem = 0
-            $def_puppetsql_mem = 0
+            $def_postgresql_mem = 0
         }
     } elsif $puppetserver {
         $def_puppetdb_mem = 0
         $def_puppetserver_mem = $heap_mb
-        $def_puppetsql_mem = 0
+        $def_postgresql_mem = 0
     } else {
         fail( 'At least one of $puppetserver or $puppetdb must be true' )
     }
     
     $act_puppetserver_mem = pick($puppetserver_mem, $def_puppetdb_mem)
     $act_puppetdb_mem = pick($puppetdb_mem, $def_puppetserver_mem)
-    $act_puppetsql_mem = pick($puppetsql_mem, $def_puppetsql_mem)
+    $act_postgresql_mem = pick($postgresql_mem, $def_postgresql_mem)
 
     include cfpuppetserver::puppetdb
     include cfpuppetserver::puppetserver
