@@ -1,6 +1,7 @@
 [main]
 certname = <%= $::trusted['certname'] %>
 server = <%= $::trusted['certname'] %>
+ca_server = <%= $cfpuppetserver::puppet_host %>
 environment = production
 
 environment_data_provider = hiera
@@ -15,6 +16,13 @@ codedir = /etc/puppetlabs/code
 <% if $cfpuppetserver::puppetserver::autosign { -%>
 # !!! NOT FOR PRODUCTION !!!
 autosign = true
+<% } -%>
+
+<% if $::trusted['certname'] != $cfpuppetserver::puppet_host {
+# TODO: force regenerate certificate
+-%>
+dns_alt_names = $cfpuppetserver::puppet_host
+ca = false
 <% } -%>
 
 # puppetdb-related

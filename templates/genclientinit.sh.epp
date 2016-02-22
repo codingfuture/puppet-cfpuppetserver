@@ -58,6 +58,7 @@ cat > /etc/puppetlabs/puppet/puppet.conf <<EOF
 [main]
 certname = $certname
 server = <%= $puppet_host %>
+ca_server = <%= $puppet_host %>
 environment = production
 EOF
 

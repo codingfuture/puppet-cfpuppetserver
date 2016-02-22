@@ -56,6 +56,7 @@ cat >/etc/puppetlabs/puppet/puppet.conf <<EOF
 [main]
 certname = $certname
 server = $certname
+ca_server = $certname
 environment = production
 
 environment_data_provider = hiera
