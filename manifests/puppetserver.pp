@@ -61,7 +61,6 @@ class cfpuppetserver::puppetserver (
         }
         
         package {'r10k': provider => 'puppet_gem' }
-        package {'deep_merge': provider => 'puppet_gem' }
         package {'activesupport': provider => 'puppet_gem' }
         package {'librarian-puppet':
             provider => 'puppet_gem',
