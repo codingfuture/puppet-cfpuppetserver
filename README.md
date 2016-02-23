@@ -59,18 +59,11 @@ Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation
 
 ### Config for Puppet Server node
 
-If r10k is used until [RK-3](https://tickets.puppetlabs.com/browse/RK-3) is solved, make
-sure to have the following lines in Puppetfile:
+Please use [librarian-puppet](https://rubygems.org/gems/librarian-puppet/) to deal with dependencies.
+If this module is used for server setup then librarian-puppet is installed automatically.
 
-```ruby
-# This deps are installed automatically by librarian-puppet, if cfpuppetserver is used
-mod 'puppetlabs/stdlib', '4.11.0'
-mod 'puppetlabs/apt', '2.2.1'
-mod 'puppetlabs/postgresql', '4.7.1'
-mod 'puppetlabs/puppetdb', '5.1.1'
-mod 'codingfuture/cfnetwork'
-mod 'codingfuture/cfsystem'
-```
+There is a known r10k issue [RK-3](https://tickets.puppetlabs.com/browse/RK-3) which prevents
+automatic dependencies of dependencies installation.
 
 ## Examples
 
