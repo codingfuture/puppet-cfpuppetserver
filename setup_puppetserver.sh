@@ -5,6 +5,7 @@ certname=${2:-$(hostname)}
 cflocation=$3
 cflocationpool=$4
 http_proxy=${5:-$http_proxy}
+autosign=${INSANE_PUPPET_AUTOSIGN:-false}
 
 if test -z "$repourl"; then
     echo "Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]"
@@ -67,6 +68,9 @@ logdir = /var/log/puppetlabs/puppetserver
 rundir = /var/run/puppetlabs/puppetserver
 pidfile = /var/run/puppetlabs/puppetserver/puppetserver.pid
 codedir = /etc/puppetlabs/code
+
+# !!! NOT FOR PRODUCTION !!!
+autosign = $autosign
 
 EOF
 
