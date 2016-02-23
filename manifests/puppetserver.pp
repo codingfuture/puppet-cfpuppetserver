@@ -77,6 +77,11 @@ class cfpuppetserver::puppetserver (
             require => Package['r10k'],
         }
         
+        file_line {'ignore puppet environments':
+                ensure  => present,
+                path    => '/etc/.gitignore',
+                line    => "puppetlabs/code/environments/*",
+        }
         
         #======================================================================
         group { $deployuser: ensure => present }
