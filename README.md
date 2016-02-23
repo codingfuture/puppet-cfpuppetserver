@@ -15,27 +15,25 @@ in environments. Example can be taken from [codingfuture/puppe-test](https://git
 
 ## Global Hiera config
 
-Due to a known open bug [PUP-5952](https://tickets.puppetlabs.com/browse/PUP-5952), global Hiera config hierarchy
-must match environment's hierarchy. Meanwhile, this can be overridden by `$cfpuppetserver::puppetserver::global_hiera_config`
+Puppet 4 has own implementation of lookup() which goes through:
 
-Thefore, current global config is:
+* Global Hiera
+* Per-environment Data Providers (Hiera, custom function)
+* Per-module Data Providers (Hiera, custom function)
+
+You should not use global Hiera any more. All configurations should be set in environments as mentioned above.
+
+Global Hiera config is as follows:
 
 ```yaml
 ---
 :backends:
   - yaml
 :hierarchy:
-  - "%{trusted.domain}/%{trusted.hostname}"
-  - "%{trusted.domain}"
-  - "%{facts.cf_location}/%{facts.cf_location_pool}"
-  - "%{facts.cf_location}"
-  - common
-:merge_behavior: deeper
+  - global
 :yaml:
   # Make sure to use hiera.yaml in environments
-  #:datadir: /etc/puppetlabs/code/hieradata
-  # Per-environment hiera.yaml is still buggy
-  :datadir: "/etc/puppetlabs/code/environments/%{::environment}/data"
+  :datadir: "/etc/puppetlabs/code/hieradata"
 ```
 
 ### Adding new Puppet clients

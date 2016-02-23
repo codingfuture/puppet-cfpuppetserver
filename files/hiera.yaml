@@ -5,6 +5,4 @@
   - global
 :yaml:
   # Make sure to use hiera.yaml in environments
-  #:datadir: /etc/puppetlabs/code/hieradata
-  # Per-environment hiera.yaml is still buggy
   :datadir: "/etc/puppetlabs/code/hieradata"
