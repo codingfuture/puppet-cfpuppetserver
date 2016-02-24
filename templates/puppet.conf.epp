@@ -21,7 +21,7 @@ autosign = true
 <% if $::trusted['certname'] != $cfpuppetserver::puppet_host {
 # TODO: force regenerate certificate
 -%>
-dns_alt_names = $cfpuppetserver::puppet_host
+dns_alt_names = <%= $cfpuppetserver::puppet_host %>
 ca = false
 <% } -%>
 

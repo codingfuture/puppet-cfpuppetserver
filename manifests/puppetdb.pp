@@ -1,6 +1,7 @@
 
 class cfpuppetserver::puppetdb (
     $postgresql_host = 'localhost',
+    $postgresql_listen = $postgresql_host,
     $postgresql_port = 5432,
     $postgresql_user = 'puppetdb',
     $postgresql_pass = 'puppetdb',
@@ -39,7 +40,12 @@ class cfpuppetserver::puppetdb (
         }
         
         if $postgresql_ssl {
-            $jdbc_ssl_properties = '?ssl=true'
+            $jdbc_ssl_properties = join([
+                '?ssl=true',
+                'sslfactory=org.postgresql.ssl.jdbc4.LibPQFactory',
+                'sslmode=verify-full',
+                'sslrootcert=/etc/puppetlabs/puppetdb/ssl/ca.pem',
+                ], '&')
         } else {
             $jdbc_ssl_properties = ''
         }
@@ -59,6 +65,8 @@ class cfpuppetserver::puppetdb (
             },
         }
         
+        # Firewall
+        #---
         cfnetwork::service_port { 'local:puppetdb': }
         cfnetwork::client_port { 'local:puppetdb':
             user => ['root', 'puppet'] }

@@ -1,6 +1,6 @@
 class cfpuppetserver::puppetdb::postgresql {
     class { 'puppetdb::database::postgresql':
-        listen_addresses    => $cfpuppetserver::puppetdb::postgresql_host,
+        listen_addresses    => $cfpuppetserver::puppetdb::postgresql_listen,
         database_port       => $cfpuppetserver::puppetdb::postgresql_port,
         database_username   => $cfpuppetserver::puppetdb::postgresql_user,
         database_password   => $cfpuppetserver::puppetdb::postgresql_pass,

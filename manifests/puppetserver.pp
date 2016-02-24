@@ -84,6 +84,13 @@ class cfpuppetserver::puppetserver (
             require  => Package['activesupport'],
         }
         
+        file {'/etc/puppetlabs/r10k':
+            ensure  => directory,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0750',
+        }
+        
         file {'/etc/puppetlabs/r10k/r10k.yaml':
             owner   => 'root',
             group   => 'root',
