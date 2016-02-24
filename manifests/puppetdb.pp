@@ -2,6 +2,9 @@
 class cfpuppetserver::puppetdb (
     $postgresql_host = 'localhost',
     $postgresql_port = 5432,
+    $postgresql_user = 'puppetdb',
+    $postgresql_pass = 'puppetdb',
+    $postgresql_ssl  = false,
 ) {
     assert_private();
     
@@ -22,20 +25,35 @@ class cfpuppetserver::puppetdb (
             }
             
             cfnetwork::service_port { 'local:puppetpsql': }
+            # non-local port must be whitelisted manually
         }
 
         if $postgresql_host == 'localhost' {
             cfnetwork::client_port { 'local:puppetpsql':
                 user => ['root', 'puppetdb'] }
+        } else {
+            cfnetwork::client_port { 'any:puppetpsql':
+                user => ['root', 'puppetdb'],
+                dst => $postgresql_host,
+            }
+        }
+        
+        if $postgresql_ssl {
+            $jdbc_ssl_properties = '?ssl=true'
+        } else {
+            $jdbc_ssl_properties = ''
         }
 
         # PuppetDB
         #---
         class { 'puppetdb::server':
-            database_host   => $postgresql_host,
-            database_port   => $postgresql_port,
-            manage_firewall => false,
-            java_args       => {
+            database_host       => $postgresql_host,
+            database_port       => $postgresql_port,
+            database_username   => $postgresql_user,
+            database_password   => $postgresql_pass,
+            jdbc_ssl_properties => $jdbc_ssl_properties,
+            manage_firewall     => false,
+            java_args           => {
                 '-Xmx' => "${cfpuppetserver::act_puppetdb_mem}m",
                 '-Xms' => "${cfpuppetserver::act_puppetdb_mem}m",
             },
