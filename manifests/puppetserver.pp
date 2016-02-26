@@ -27,6 +27,7 @@ class cfpuppetserver::puppetserver (
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
+            before  => Package['puppetserver'],
         }
         file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
@@ -65,7 +66,8 @@ class cfpuppetserver::puppetserver (
             line    => "JAVA_ARGS=\"${java_args}\"",
             match   => 'JAVA_ARGS=',
             replace => true,
-            notify  => Service['puppetserver'],
+            # This causes deploy failure compare to temporary PuppetDB unavailability
+            #notify  => Service['puppetserver'],
         }
 
         #======================================================================
