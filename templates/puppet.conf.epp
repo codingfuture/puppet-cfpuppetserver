@@ -1,10 +1,18 @@
 [main]
 certname = <%= $::trusted['certname'] %>
 server = <%= $::trusted['certname'] %>
-ca_server = <%= $cfpuppetserver::puppet_host %>
-environment = production
-
+ca_server = <%= $cfsystem::puppet_host %>
+environment = <%= $cfsystem::puppet_env %>
 environment_data_provider = hiera
+
+srv_domain = <%= $::trusted['domain'] %>
+
+<% if $cfsystem::puppet_env { -%>
+use_srv_records = true
+<% } else { -%>
+use_srv_records = false
+<% } -%>
+
 
 [master]
 vardir = /opt/puppetlabs/server/data/puppetserver
@@ -18,10 +26,10 @@ codedir = /etc/puppetlabs/code
 autosign = true
 <% } -%>
 
-<% if $::trusted['certname'] != $cfpuppetserver::puppet_host {
+<% if $::trusted['certname'] != $cfsystem::puppet_host {
 # TODO: force regenerate certificate
 -%>
-dns_alt_names = <%= $cfpuppetserver::puppet_host %>
+dns_alt_names = <%= $cfsystem::puppet_host %>
 ca = false
 <% } -%>
 

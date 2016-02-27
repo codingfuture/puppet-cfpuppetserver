@@ -1,6 +1,5 @@
 
 class cfpuppetserver (
-    $puppet_host = $::trusted['certname'],
     $deployuser = 'deploypuppet',
     $deployuser_auth_keys = undef,
     $repo_url = undef,
@@ -74,13 +73,13 @@ class cfpuppetserver (
     $act_puppetdb_mem = pick($puppetdb_mem, $def_puppetserver_mem)
     $act_postgresql_mem = pick($postgresql_mem, $def_postgresql_mem)
     
-    if $act_puppetserver_mem < 192 {
+    if $act_puppetserver_mem < 192 and $act_puppetserver_mem != 0 {
         fail("Puppet server requires minimum of 192MB of RAM, configured: ${act_puppetserver_mem}")
     }
-    if $act_puppetdb_mem < 192 {
+    if $act_puppetdb_mem < 192 and $act_puppetdb_mem != 0 {
         fail("Puppet server requires minimum of 192MB of RAM, configured: ${act_puppetdb_mem}")
     }
-    if $act_postgresql_mem < 128 {
+    if $act_postgresql_mem < 128 and $act_postgresql_mem != 0 {
         fail("Puppet server requires minimum of 128MB of RAM, configured: ${act_postgresql_mem}")
     }
 
@@ -96,7 +95,7 @@ class cfpuppetserver (
         group   => root,
         mode    => '0750',
         content => epp('cfpuppetserver/genclientinit.sh.epp', {
-            puppet_host => $puppet_host
+            puppet_host => $cfsystem::puppet_host
         }),
     }
 }

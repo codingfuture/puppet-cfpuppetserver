@@ -11,7 +11,7 @@ class cfpuppetserver::puppetdb (
     
     $puppetdb = $cfpuppetserver::puppetdb
     $puppetsever = $cfpuppetserver::puppetsever
-    $puppet_host = $cfpuppetserver::puppet_host
+    $puppet_host = $cfsystem::puppet_host
     $setup_postgresql = $cfpuppetserver::setup_postgresql
     
     cfnetwork::describe_service {'puppetdb': server => "tcp/${cfpuppetserver::puppetdb_port}"}

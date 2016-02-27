@@ -166,7 +166,7 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: /etc/puppetlabs/deploy.sh
         }
         
         #======================================================================
-        $is_slave = $::trusted['certname'] != $cfpuppetserver::puppet_host 
+        $is_slave = $::trusted['certname'] != $cfsystem::puppet_host 
         
         if $is_slave {
             file_line { 'remove_puppet_ca_enable':
