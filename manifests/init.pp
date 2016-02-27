@@ -73,6 +73,16 @@ class cfpuppetserver (
     $act_puppetserver_mem = pick($puppetserver_mem, $def_puppetdb_mem)
     $act_puppetdb_mem = pick($puppetdb_mem, $def_puppetserver_mem)
     $act_postgresql_mem = pick($postgresql_mem, $def_postgresql_mem)
+    
+    if $act_puppetserver_mem < 192 {
+        fail("Puppet server requires minimum of 192MB of RAM, configured: ${act_puppetserver_mem}")
+    }
+    if $act_puppetdb_mem < 192 {
+        fail("Puppet server requires minimum of 192MB of RAM, configured: ${act_puppetdb_mem}")
+    }
+    if $act_postgresql_mem < 128 {
+        fail("Puppet server requires minimum of 128MB of RAM, configured: ${act_postgresql_mem}")
+    }
 
     include cfpuppetserver::puppetdb
     include cfpuppetserver::puppetserver

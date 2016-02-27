@@ -69,6 +69,10 @@ class cfpuppetserver::puppetserver (
             # This causes deploy failure compare to temporary PuppetDB unavailability
             #notify  => Service['puppetserver'],
         }
+        
+        if !defined(Service['puppetserver']) {
+            service { 'puppetserver': ensure => running }
+        }
 
         #======================================================================
         file {'/etc/puppetlabs/deploy.sh':
@@ -158,6 +162,33 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: /etc/puppetlabs/deploy.sh
             cfnetwork::service_port { 'any:ssh:puppetvcs':
                 src     => $puppet_git_host,
                 comment => 'Puppet config git deploy access'
+            }
+        }
+        
+        #======================================================================
+        $is_slave = $::trusted['certname'] != $cfpuppetserver::puppet_host 
+        
+        if $is_slave {
+            file_line { 'remove_puppet_ca_enable':
+                ensure  => present,
+                path    => '/etc/puppetlabs/puppetserver/bootstrap.cfg',
+                line    => "#puppetlabs.services.ca.certificate-authority-service/certificate-authority-service",
+                match   => 'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
+                replace => true,
+            }
+            file_line { 'add_puppet_ca_disable':
+                ensure  => present,
+                path    => '/etc/puppetlabs/puppetserver/bootstrap.cfg',
+                line    => "puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service",
+                match   => '#puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
+                replace => true,
+            }
+            
+            file { '/etc/puppetlabs/puppetserver/conf.d/webserver.conf':
+                owner   => 'puppet',
+                group   => 'puppet',
+                mode    => '0644',
+                content => epp('cfpuppetserver/webserver.conf.epp')
             }
         }
     }

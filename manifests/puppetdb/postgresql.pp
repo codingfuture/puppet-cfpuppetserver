@@ -62,4 +62,10 @@ class cfpuppetserver::puppetdb::postgresql {
     postgresql::server::config_entry {
         'ssl_ciphers': value => 'HIGH'
     }
+    
+    if !defined(Service['postgresql']) {
+        service { 'postgresql':
+            ensure => running,
+        }
+    }
 }
