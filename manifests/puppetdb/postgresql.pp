@@ -36,13 +36,13 @@ class cfpuppetserver::puppetdb::postgresql {
         mode   => '0600',
         owner  => 'postgres',
         group  => 'postgres',
-        source => "/etc/puppetlabs/puppet/ssl/certs/ca.pem",
+        source => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
     } ->
     file {'/etc/postgresql/ssl/crl.crt':
         mode   => '0600',
         owner  => 'postgres',
         group  => 'postgres',
-        source => "/etc/puppetlabs/puppet/ssl/crl.pem",
+        source => '/etc/puppetlabs/puppet/ssl/crl.pem',
     } ->
     postgresql::server::config_entry {
         'ssl_key_file': value => '/etc/postgresql/ssl/server.key'
@@ -50,7 +50,7 @@ class cfpuppetserver::puppetdb::postgresql {
     postgresql::server::config_entry {
         'ssl_cert_file': value => '/etc/postgresql/ssl/server.crt'
     } ->
-    postgresql::server::config_entry {        
+    postgresql::server::config_entry {
         'ssl_ca_file': value => '/etc/postgresql/ssl/ca.crt'
     } ->
     postgresql::server::config_entry {

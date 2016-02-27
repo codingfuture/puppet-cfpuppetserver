@@ -35,7 +35,7 @@ class cfpuppetserver::puppetdb (
         } else {
             cfnetwork::client_port { 'any:puppetpsql':
                 user => ['root', 'puppetdb'],
-                dst => $postgresql_host,
+                dst  => $postgresql_host,
             }
         }
         

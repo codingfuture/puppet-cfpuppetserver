@@ -91,10 +91,10 @@ class cfpuppetserver::puppetserver (
         }
         
         file {'/etc/puppetlabs/r10k':
-            ensure  => directory,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0750',
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0750',
         }
         
         file {'/etc/puppetlabs/r10k/r10k.yaml':
@@ -106,9 +106,9 @@ class cfpuppetserver::puppetserver (
         }
         
         file_line {'ignore puppet environments':
-                ensure  => present,
-                path    => '/etc/.gitignore',
-                line    => "puppetlabs/code/environments/*",
+                ensure => present,
+                path   => '/etc/.gitignore',
+                line   => 'puppetlabs/code/environments/*',
         }
         
         #======================================================================
@@ -166,20 +166,20 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: /etc/puppetlabs/deploy.sh
         }
         
         #======================================================================
-        $is_slave = $::trusted['certname'] != $cfsystem::puppet_host 
+        $is_slave = $::trusted['certname'] != $cfsystem::puppet_host
         
         if $is_slave {
             file_line { 'remove_puppet_ca_enable':
                 ensure  => present,
                 path    => '/etc/puppetlabs/puppetserver/bootstrap.cfg',
-                line    => "#puppetlabs.services.ca.certificate-authority-service/certificate-authority-service",
+                line    => '#puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                 match   => 'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                 replace => true,
             }
             file_line { 'add_puppet_ca_disable':
                 ensure  => present,
                 path    => '/etc/puppetlabs/puppetserver/bootstrap.cfg',
-                line    => "puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service",
+                line    => 'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
                 match   => '#puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
                 replace => true,
             }
