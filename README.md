@@ -71,7 +71,6 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 
 ## `cfpuppetserver` class
 
-* `puppet_host= $::trusted['certname']` - puppet server address
 * `deployuser = 'deploypuppet'` - user name for auto deploy user for VCS hook
 * `deployuser_auth_keys = undef` - list of ssh_authorized_keys configurations
 * `repo_url = undef` - repository location in URI format (e.g. ssh://user@host/repo or file:///some/path)
@@ -87,7 +86,12 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 ## `cfpuppetserver::puppetdb` class
 
 * `postgresql_host = 'localhost'` - PostgreSQL host to listen and connect
+* `postgresql_listen = $postgresql_host` - goes into PostgreSQL listen configuration
 * `postgresql_port = 5432` - PostgreSQL port to listen and connect
+* `postgresql_user = 'puppetdb'` - PostgreSQL user
+* `postgresql_pass = 'puppetdb'` - PostgreSQL password
+* `postgresql_ssl  = false` - enable SSL for PostgreSQL connection (uses Puppet's PKI)
+
 
 ## `cfpuppetserver::puppetserver` class
 
