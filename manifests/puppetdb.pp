@@ -69,7 +69,8 @@ class cfpuppetserver::puppetdb (
         #---
         cfnetwork::service_port { 'local:puppetdb': }
         cfnetwork::client_port { 'local:puppetdb':
-            user => ['root', 'puppet'] }
+            user => ['root', 'puppet']
+        }
         
         if !$puppetsever {
             cfnetwork::service_port {

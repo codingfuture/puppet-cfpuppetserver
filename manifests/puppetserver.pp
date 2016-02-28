@@ -27,21 +27,23 @@ class cfpuppetserver::puppetserver (
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
-            before  => Package['puppetserver'],
+            require => Package['puppetserver'],
         }
         file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => file($global_hiera_config),
+            require => Package['puppetserver'],
             notify  => Service['puppetserver'],
         }
         
         file {'/etc/puppetlabs/code/hieradata':
-            ensure => directory,
-            owner  => 'puppet',
-            group  => 'puppet',
-            mode   => '0755',
+            ensure  => directory,
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0755',
+            require => Package['puppetserver'],
         }
         
         file {'/etc/puppetlabs/code/hieradata/global.yaml':
@@ -50,11 +52,11 @@ class cfpuppetserver::puppetserver (
             mode    => '0755',
             replace => false,
             content => file('cfpuppetserver/global.yaml'),
+            require => Package['puppetserver'],
             notify  => Service['puppetserver'],
         }
         
         package { 'puppetserver': }
-        package { 'puppet-agent': }
         cfnetwork::service_port { "${cfpuppetserver::service_face}:puppet": }
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
         cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
@@ -66,12 +68,16 @@ class cfpuppetserver::puppetserver (
             line    => "JAVA_ARGS=\"${java_args}\"",
             match   => 'JAVA_ARGS=',
             replace => true,
+            require => Package['puppetserver'],
             # This causes deploy failure compare to temporary PuppetDB unavailability
             #notify  => Service['puppetserver'],
         }
         
-        if !defined(Service['puppetserver']) {
-            service { 'puppetserver': ensure => running }
+        if ! defined(Service['puppetserver']) {
+            service { 'puppetserver':
+                ensure  => running,
+                require => Package['puppetserver'],
+            }
         }
 
         #======================================================================
