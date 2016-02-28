@@ -1,13 +1,17 @@
 [main]
 certname = <%= $::trusted['certname'] %>
 server = <%= $::trusted['certname'] %>
+<% if $cfsystem::puppet_cahost { -%>
+ca_server = <%= $cfsystem::puppet_cahost %>
+<% } else { -%>
 ca_server = <%= $cfsystem::puppet_host %>
+<% } -%>
 environment = <%= $cfsystem::puppet_env %>
 environment_data_provider = hiera
 
 srv_domain = <%= $::trusted['domain'] %>
 
-<% if $cfsystem::puppet_env { -%>
+<% if $cfsystem::puppet_use_dns_srv { -%>
 use_srv_records = true
 <% } else { -%>
 use_srv_records = false
