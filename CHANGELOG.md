@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.2]
+
+- Fixed use_srv_records and ca_server puppet setting to depend on correct parameters
+- Changed to use primary Puppet host for secondary Puppet servers
+- Fixed dependency issues when installing Puppet Server from Puppet itself
+
 ## [0.9.1]
 
 - Implemented proper 3 level Global Hiera -> Environment Data Provider -> Module Data Provider
@@ -46,6 +52,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.2]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.2
+[0.9.1]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.1
 [0.9.0]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.0
 [0.1.2]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.1.2
 [0.1.1]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.1.1
