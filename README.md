@@ -74,7 +74,7 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 * `deployuser = 'deploypuppet'` - user name for auto deploy user for VCS hook
 * `deployuser_auth_keys = undef` - list of ssh_authorized_keys configurations
 * `repo_url = undef` - repository location in URI format (e.g. ssh://user@host/repo or file:///some/path)
-* `puppetsever = true` - if true then assume Puppet Server lives on this host (affects firewall)
+* `puppetserver = true` - if true then assume Puppet Server lives on this host (affects firewall)
 * `puppetdb = true` - if true then assume Puppet DB lives on this host (affects firewall)
 * `puppetdb_port = 8081` - port to use for Puppet DB
 * `setup_postgresql = true` - if true and $puppetdb == true then install and configure PostgreSQL as well
