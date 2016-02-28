@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.3]
+
+- Fixed issues in deploy.sh under some conditions
+    - Forcibly added Puppet bin folder to PATH
+    - Fixed deploy.sh created by setup_puppetserver.sh bootstrap script
+
 ## [0.9.2]
 
 - Fixed use_srv_records and ca_server puppet setting to depend on correct parameters
@@ -52,6 +58,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.3]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.3
 [0.9.2]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.2
 [0.9.1]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.1
 [0.9.0]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.0
