@@ -1,7 +1,7 @@
 #!/bin/bash
 
 repourl=$1
-certname=${2:-$(hostname)}
+certname=${2:-$(hostname --fqdn)}
 cflocation=$3
 cflocationpool=$4
 http_proxy=${5:-$http_proxy}
