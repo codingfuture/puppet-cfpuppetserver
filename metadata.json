@@ -48,11 +48,11 @@
     },
     {
       "name": "codingfuture-cfnetwork",
-      "version_requirement": ">= 0.9.4"
+      "version_requirement": ">= 0.9.5"
     },
     {
       "name": "codingfuture-cfsystem",
-      "version_requirement": ">= 0.9.5"
+      "version_requirement": ">= 0.9.8"
     }
   ],
   "data_provider": "hiera"
