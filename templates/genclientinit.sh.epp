@@ -6,7 +6,7 @@ cflocationpool=$3
 http_proxy=$4
 
 if test -z "$certname"; then
-    echo "Usage: ./genclientinit.sh <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]]"
+    echo "Usage: $(basename $0) <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]]"
     exit 1
 fi
 

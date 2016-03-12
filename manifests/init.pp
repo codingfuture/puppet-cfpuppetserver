@@ -20,6 +20,7 @@ class cfpuppetserver (
     include stdlib
     include cfnetwork
     include cfsystem
+    include cfsystem::custombin
     
     #---
     if $puppet_git_host {
@@ -87,10 +88,7 @@ class cfpuppetserver (
     include cfpuppetserver::puppetserver
     
     #---
-    # cleanup old version
-    file {'/root/initclient.sh': ensure => absent}
-
-    file {'/root/genclientinit.sh':
+    file {"${cfsystem::custombin::bin_dir}/cf_gen_puppet_client_init":
         owner   => root,
         group   => root,
         mode    => '0750',

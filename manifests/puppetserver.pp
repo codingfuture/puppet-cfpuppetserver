@@ -81,7 +81,7 @@ class cfpuppetserver::puppetserver (
         }
 
         #======================================================================
-        file {'/etc/puppetlabs/deploy.sh':
+        file {"${cfsystem::custombin::bin_dir}/cf_r10k_deploy":
             owner   => 'root',
             group   => 'root',
             mode    => '0750',
@@ -134,7 +134,7 @@ class cfpuppetserver::puppetserver (
             group   => $deployuser,
             mode    => '0750',
             content => "#!/bin/sh
-sudo /etc/puppetlabs/deploy.sh
+sudo ${cfsystem::custombin::bin_dir}/cf_r10k_deploy
 "
         }
         
@@ -143,7 +143,7 @@ sudo /etc/puppetlabs/deploy.sh
             owner   => root,
             mode    => '0400',
             content => "
-${deployuser} ALL=(ALL:ALL) NOPASSWD: /etc/puppetlabs/deploy.sh
+${deployuser} ALL=(ALL:ALL) NOPASSWD: ${cfsystem::custombin::bin_dir}/cf_r10k_deploy
 ",
         }
         

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.4]
+- Updated cfsystem to 0.9.9
+- Changed to install all scripts under /opt/codingfuture/bin
+    * cf_r10k_deploy
+    * cf_gen_puppet_client_init
+
 ## [0.9.3]
 
 - Fixed issues in deploy.sh under some conditions

@@ -8,7 +8,7 @@ http_proxy=${5:-$http_proxy}
 autosign=${INSANE_PUPPET_AUTOSIGN:-false}
 
 if test -z "$repourl"; then
-    echo "Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]"
+    echo "Usage: $0 <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]"
     exit 1
 fi
 
@@ -210,7 +210,8 @@ cat >/etc/puppetlabs/r10k/r10k.yaml <<EOCONF
 # TO BE OVERWRITTEN
 EOCONF
 
-cat >/etc/puppetlabs/deploy.sh <<EOCONF
+mkdir -p /opt/codingfuture/bin
+cat >/opt/codingfuture/bin/cf_r10k_deploy <<EOCONF
 #!/bin/bash
 
 export PATH="/opt/puppetlabs/bin/:/opt/puppetlabs/puppet/bin/:\$PATH"

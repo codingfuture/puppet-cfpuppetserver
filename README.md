@@ -41,9 +41,21 @@ Global Hiera config is as follows:
 This module also provides a handy tool to initalize new puppet client hosts:
 
 ```
-~#  /root/genclientinit.sh 
-Usage: ./genclientinit.sh <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]
+~#  /opt/codingfuture/bin/cf_gen_puppet_client_init
+Usage: cf_gen_puppet_client_init <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]
 ```
+
+### Manual (re-)deployment of Puppet environments
+
+```
+~# /opt/codingfuture/bin/cf_r10k_deploy
+```
+
+### Automatic deployment via VCS (git) hook
+```
+~# ssh deploypuppet@puppet.example.com sudo /opt/codingfuture/bin/cf_r10k_deploy
+```
+
 
 ## Setup
 
