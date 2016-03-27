@@ -144,7 +144,7 @@ $PUPPET resource service puppetdb ensure=running enable=true
 service puppetdb restart
 
 # Connect PuppetMaster to PuppetDB
-$PUPPET resource package puppetdb-termini ensure=latest
+$PUPPET resource package puppetdb-terminus ensure=latest
 grep $certname /etc/hosts | read || \
     $PUPPET resource host $certname ip=$(/opt/puppetlabs/bin/facter networking.ip)
 
@@ -181,7 +181,7 @@ cat >/etc/puppetlabs/code/hiera.yaml <<EOCONF
   :datadir: "/etc/puppetlabs/code/hieradata"
 # TO BE OVERWRITTEN
 EOCONF
-mkdir /etc/puppetlabs/code/hieradata
+mkdir -p /etc/puppetlabs/code/hieradata
 cat >/etc/puppetlabs/code/hieradata/global.yaml <<EOCONF
 ---
 {}
@@ -226,7 +226,7 @@ done
 chown -R puppet:puppet /etc/puppetlabs/code/environments/
 # TO BE OVERWRITTEN
 EOCONF
-chmod 750 /etc/puppetlabs/deploy.sh
+chmod 750 /opt/codingfuture/bin/cf_r10k_deploy
 
 /opt/puppetlabs/puppet/bin/gem install r10k
 
