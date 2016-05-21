@@ -10,7 +10,7 @@ class cfpuppetserver::puppetdb (
     assert_private();
     
     $puppetdb = $cfpuppetserver::puppetdb
-    $puppetsever = $cfpuppetserver::puppetsever
+    $puppetserver = $cfpuppetserver::puppetserver
     $puppet_host = $cfsystem::puppet_host
     $setup_postgresql = $cfpuppetserver::setup_postgresql
     
@@ -72,7 +72,7 @@ class cfpuppetserver::puppetdb (
             user => ['root', 'puppet']
         }
         
-        if !$puppetsever {
+        if !$puppetserver {
             cfnetwork::service_port {
                 "${cfpuppetserver::service_face}:puppetdb":
                     src => $puppet_host
