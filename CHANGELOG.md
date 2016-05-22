@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Updated to Puppet 4.5.0
 - Enforced strict mode checking
 - Minor fixes
+- Added $allow_update_check option
 
 ## [0.9.5]
 - Fixed minor issues in puppet server bootstrap script

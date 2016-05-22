@@ -61,6 +61,13 @@ class cfpuppetserver::puppetserver (
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
         cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
         
+        if $cfpuppetserver::allow_update_check {
+            cfnetwork::client_port { 'any:http:puppetdb_version':
+                user => ['puppet'],
+                dst => 'updates.puppetlabs.com'
+            }
+        }
+        
         $java_args="-Xms${cfpuppetserver::act_puppetserver_mem}m -Xmx${cfpuppetserver::act_puppetserver_mem}m"
         file_line { 'puppetsever_memlimit':
             ensure  => present,

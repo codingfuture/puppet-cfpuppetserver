@@ -14,6 +14,8 @@ class cfpuppetserver (
     $puppetdb_mem = undef,
     $postgresql_mem = undef,
     
+    $allow_update_check = false,
+    
     # deprecated
     $puppet_git_host = undef,
 ) {

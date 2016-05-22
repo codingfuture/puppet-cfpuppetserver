@@ -94,6 +94,7 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 * `puppetserver_mem = auto` - memory in MB to use for Puppet Server, if installed
 * `puppetdb_mem = auto` - memory in MB to use for Puppet DB, if installed
 * `postgresql_mem = auto` - memory in MB to use for PostgreSQL, if installed
+* `allow_update_check = false` - open firewall to connect to updates.puppetlabs.com, if enabled
 
 ## `cfpuppetserver::puppetdb` class
 
