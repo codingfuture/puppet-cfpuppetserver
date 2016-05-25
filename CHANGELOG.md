@@ -9,6 +9,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Minor fixes
 - Added $allow_update_check option
 - Fixed minor issues in puppet server bootstrap script
+- Updated to latest deps
 
 ## [0.9.4]
 - Updated cfsystem to 0.9.9
