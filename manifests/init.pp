@@ -49,11 +49,11 @@ class cfpuppetserver (
     if is_bool($puppetdb) and $puppetdb {
         if $puppetserver and $setup_postgresql {
             $def_puppetdb_mem = $heap_mb / 3
-            $def_puppetserver_mem = $def_puppetdb_mem * 2 / 3
+            $def_puppetserver_mem = $def_puppetdb_mem
             $def_postgresql_mem = $def_puppetdb_mem
         } elsif $puppetserver {
             $def_puppetdb_mem = $heap_mb / 2
-            $def_puppetserver_mem = $def_puppetdb_mem * 2 / 3
+            $def_puppetserver_mem = $def_puppetdb_mem
             $def_postgresql_mem = 0
         } elsif $setup_postgresql {
             $def_puppetdb_mem = $heap_mb / 2
