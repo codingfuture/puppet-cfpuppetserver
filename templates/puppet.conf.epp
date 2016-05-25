@@ -20,6 +20,7 @@ use_srv_records = false
 strict_environment_mode = true
 strict_hostname_checking = true
 strict = error
+strict_variables = true
 
 
 [master]
