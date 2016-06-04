@@ -1,0 +1,39 @@
+<%
+if $::facts['processorcount'] > 1 {
+    $max_active_instances = $::facts['processorcount'] - 1
+} else {
+    $max_active_instances = 1
+}
+-%>
+jruby-puppet: {
+    ruby-load-path: [/opt/puppetlabs/puppet/lib/ruby/vendor_ruby]
+    gem-home: /opt/puppetlabs/server/data/puppetserver/jruby-gems
+    master-conf-dir: /etc/puppetlabs/puppet
+    master-code-dir: /etc/puppetlabs/code
+    master-var-dir: /opt/puppetlabs/server/data/puppetserver
+    master-run-dir: /var/run/puppetlabs/puppetserver
+    master-log-dir: /var/log/puppetlabs/puppetserver
+    max-active-instances: <%= $max_active_instances  %>
+    max-requests-per-instance: 100
+    use-legacy-auth-conf: false
+    compile-mode: jit
+}
+
+http-client: {
+    # A list of acceptable protocols for making HTTP requests
+    #ssl-protocols: [TLSv1, TLSv1.1, TLSv1.2]
+
+    # A list of acceptable cipher suites for making HTTP requests
+    #cipher-suites: [TLS_RSA_WITH_AES_256_CBC_SHA256,
+    #                TLS_RSA_WITH_AES_256_CBC_SHA,
+    #                TLS_RSA_WITH_AES_128_CBC_SHA256,
+    #                TLS_RSA_WITH_AES_128_CBC_SHA]
+    
+    connect-timeout-milliseconds: 15000
+    idle-timeout-milliseconds: 600000
+}
+
+profiler: {
+    # enable or disable profiling for the Ruby code; defaults to 'false'.
+    #enabled: true
+}

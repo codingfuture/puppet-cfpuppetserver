@@ -29,6 +29,13 @@ class cfpuppetserver::puppetserver (
             content => epp('cfpuppetserver/puppet.conf.epp'),
             require => Package['puppetserver'],
         }
+        file {'/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => epp('cfpuppetserver/puppetserver.conf.epp'),
+            require => Package['puppetserver'],
+        }
         file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
             group   => 'puppet',
@@ -66,6 +73,14 @@ class cfpuppetserver::puppetserver (
                 user => ['puppet'],
                 dst => 'updates.puppetlabs.com'
             }
+            file {'/etc/puppetlabs/puppetserver/opt-out':
+                ensure => absent
+            }
+        } else {
+            file {'/etc/puppetlabs/puppetserver/opt-out':
+                ensure  => file,
+                content => '',
+            }            
         }
         
         $java_args="-Xms${cfpuppetserver::act_puppetserver_mem}m -Xmx${cfpuppetserver::act_puppetserver_mem}m"
