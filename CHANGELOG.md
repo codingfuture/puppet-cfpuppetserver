@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.6]
+- Disabled scheduled agent runs safety purposes
+
 ## [0.9.5]
 - Updated to Puppet 4.5.0
 - Enforced strict mode checking
@@ -72,6 +75,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.9.6]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.6
 [0.9.5]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.5
 [0.9.4]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.4
 [0.9.3]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.3

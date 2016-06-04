@@ -1,4 +1,5 @@
 [main]
+client = false
 certname = <%= $::trusted['certname'] %>
 server = <%= $cfsystem::puppet_host %>
 <% if $cfsystem::puppet_cahost { -%>
