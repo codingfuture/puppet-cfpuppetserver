@@ -110,7 +110,7 @@ $PUPPET resource package postgresql-contrib ensure=latest
 echo "Configuring postgresql"
 sudo -u postgres createuser -DRS puppetdb
 sudo -u postgres psql -c "ALTER USER puppetdb WITH PASSWORD 'puppetdb';"
-sudo -u postgres createdb -E UTF8 -O puppetdb puppetdb
+sudo -u postgres createdb --locale=en_US.utf8 -E UTF8 -O puppetdb -T template0 puppetdb
 sudo -u postgres psql puppetdb -c 'create extension pg_trgm'
 for f in /etc/postgresql/*/main/pg_hba.conf; do
     cat >$f <<EOCONF
