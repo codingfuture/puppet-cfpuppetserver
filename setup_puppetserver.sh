@@ -170,6 +170,8 @@ master:
 # TO BE OVERWRITTEN
 EOCONF
 
+echo puppetlabs/code >>/etc/.gitignore
+
 cat >/etc/puppetlabs/code/hiera.yaml <<EOCONF
 ---
 :backends:

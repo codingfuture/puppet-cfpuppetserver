@@ -1,0 +1,4 @@
+[main]
+server_urls = <%= $server_urls %>
+sticky_read_failover = true
+soft_write_failure = false

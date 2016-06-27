@@ -2,7 +2,7 @@
   "name": "codingfuture-cfpuppetserver",
   "version": "0.9.6",
   "author": "Andrey Galkin",
-  "summary": "Post-setup configuration to live in peace with cfnetwork and cfsystem modules",
+  "summary": "Alternative PuppetDB+PostgreSQL and PuppetServer setup module",
   "license": "Apache-2.0",
   "source": "https://github.com/codingfuture/puppet-cfpuppetserver",
   "project_page": "https://github.com/codingfuture/puppet-cfpuppetserver",
@@ -36,24 +36,12 @@
       "version_requirement": ">= 4.12.0"
     },
     {
-      "name": "puppetlabs-apt",
-      "version_requirement": ">= 2.2.2"
+      "name": "codingfuture-cfsystem",
+      "version_requirement": ">= 0.9.17"
     },
     {
-      "name": "puppetlabs-postgresql",
-      "version_requirement": ">= 4.7.1"
-    },
-    {
-      "name": "puppetlabs-puppetdb",
-      "version_requirement": ">= 5.1.2"
-    },
-    {
-      "name": "codingfuture-cfnetwork",
-      "version_requirement": ">= 0.9.8"
-    },
-    {
-      "name": "codingfuture-cfauth",
-      "version_requirement": ">= 0.9.6"
+      "name": "codingfuture-cfdb",
+      "version_requirement": ">= 0.9.5"
     }
   ],
   "data_provider": "hiera"

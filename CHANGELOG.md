@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.9.7]
+- Migrated to `cfdb` module for PostgreSQL provisioning and High Availability setup
+- Cpmpletely rewritten PuppetDB configuration
+- Many parameters change!
+- Security enforcement for PuppetDB access authorization
+
 ## [0.9.6]
 - Disabled scheduled agent runs safety purposes
 - Added custom puppetserver.conf to mitigate memory leaks with JRuby tuning

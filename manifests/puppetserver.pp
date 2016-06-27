@@ -2,69 +2,100 @@
 class cfpuppetserver::puppetserver (
     $autosign = false,
     $global_hiera_config = 'cfpuppetserver/hiera.yaml',
+    $memory_weight = 100,
+    $memory_max = undef,
+    $cpu_weight = 100,
+    $io_weight = 100,
 ) {
     assert_private();
+    
+    #---
+    if $cfpuppetserver::repo_url {
+        $repo_url_parsed = cfpuppetserver_uriparse($cfpuppetserver::repo_url)
+        
+        if $repo_url_parsed {
+            $puppet_git_host_parsed = $repo_url_parsed['host']
+        } else {
+            fail("Failed to parse \$repo_url='${cfpuppetserver::repo_url}'")
+        }
+    }
+    
 
     $deployuser = $cfpuppetserver::deployuser
     $deployuser_auth_keys = $cfpuppetserver::deployuser_auth_keys
-    $puppet_git_host = $cfpuppetserver::puppet_git_host_parsed
+    $puppet_git_host = $puppet_git_host_parsed
 
     if $cfpuppetserver::puppetserver {
         if is_bool($cfpuppetserver::puppetdb) {
-            $puppetdb_host = $::trusted['certname']
+            $puppetdb_host = [$::fqdn]
         } else {
-            $puppetdb_host = $cfpuppetserver::puppetdb
+            $puppetdb_host = any2array($cfpuppetserver::puppetdb)
         }
         
-        class { 'puppetdb::master::config':
-            puppetdb_server => $puppetdb_host,
-            puppetdb_port   => $cfpuppetserver::puppetdb_port,
-            manage_config   => true,
+        $puppetdb_port = $cfpuppetserver::puppetdb::port
+        
+        $puppetdb_server_urls = ($puppetdb_host.reduce([]) |$m, $host| {
+            $m << "https://${host}:${puppetdb_port}"
+        }).join(',')
+        
+        $service_name = 'cfpuppetserver'
+        
+        cfsystem_memory_weight { $service_name:
+            ensure => present,
+            weight => $memory_weight,
+            min_mb => 192,
+            max_mb => $memory_max,
         }
-
+    
+        package { 'puppetserver': } ->
+        package { 'puppetdb-termini': } ->
+        file {'/etc/puppetlabs/puppet/puppetdb.conf':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => epp('cfpuppetserver/puppetdb.conf.epp', {
+                server_urls => $puppetdb_server_urls,
+            }),
+        } ->
         file {'/etc/puppetlabs/puppet/puppet.conf':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
-            require => Package['puppetserver'],
-        }
+        } ->
         file {'/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppetserver.conf.epp'),
-            require => Package['puppetserver'],
-        }
+        } ->
         file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => file($global_hiera_config),
-            require => Package['puppetserver'],
-            notify  => Service['puppetserver'],
-        }
-        
+        } ->
         file {'/etc/puppetlabs/code/hieradata':
             ensure  => directory,
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0755',
-            require => Package['puppetserver'],
-        }
-        
+        } ->
         file {'/etc/puppetlabs/code/hieradata/global.yaml':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0755',
             replace => false,
             content => file('cfpuppetserver/global.yaml'),
-            require => Package['puppetserver'],
-            notify  => Service['puppetserver'],
+        } ->
+        cf_puppetserver{ $service_name:
+            ensure       => present,
+            service_name => $service_name,
+            cpu_weight   => $cpu_weight,
+            io_weight    => $io_weight,
         }
         
-        package { 'puppetserver': }
-        cfnetwork::service_port { "${cfpuppetserver::service_face}:puppet": }
+        cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
         cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
         
@@ -81,25 +112,6 @@ class cfpuppetserver::puppetserver (
                 ensure  => file,
                 content => '',
             }            
-        }
-        
-        $java_args="-Xms${cfpuppetserver::act_puppetserver_mem}m -Xmx${cfpuppetserver::act_puppetserver_mem}m"
-        file_line { 'puppetsever_memlimit':
-            ensure  => present,
-            path    => '/etc/default/puppetserver',
-            line    => "JAVA_ARGS=\"${java_args}\"",
-            match   => 'JAVA_ARGS=',
-            replace => true,
-            require => Package['puppetserver'],
-            # This causes deploy failure compare to temporary PuppetDB unavailability
-            #notify  => Service['puppetserver'],
-        }
-        
-        if ! defined(Service['puppetserver']) {
-            service { 'puppetserver':
-                ensure  => running,
-                require => Package['puppetserver'],
-            }
         }
 
         #======================================================================
@@ -194,7 +206,7 @@ ${deployuser} ALL=(ALL:ALL) NOPASSWD: ${cfsystem::custombin::bin_dir}/cf_r10k_de
         }
         
         #======================================================================
-        $is_slave = $::trusted['certname'] != $cfsystem::puppet_host
+        $is_slave = $::fqdn != $cfsystem::puppet_host
         
         if $is_slave {
             file_line { 'remove_puppet_ca_enable':
