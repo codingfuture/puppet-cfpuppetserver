@@ -13,7 +13,7 @@ class cfpuppetserver::postgresql(
     assert_private();
     
     if $cfpuppetserver::postgresql {
-        $init_db_from = $::os['family'] ? {
+        $init_db_from = $::os['name'] ? {
             'Debian' => $::os['distro']['codename'] ? {
                 'jessie' => '9.4:/var/lib/postgresql/9.4/main/',
                 default => '9.5:/var/lib/postgresql/9.5/main/',
