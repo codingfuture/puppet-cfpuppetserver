@@ -6,6 +6,7 @@ class cfpuppetserver::puppetserver (
     $memory_max = undef,
     $cpu_weight = 100,
     $io_weight = 100,
+    $activesupport_ver = '4.2.7.1',
 ) {
     assert_private();
     
@@ -123,7 +124,10 @@ class cfpuppetserver::puppetserver (
         }
         
         package {'r10k': provider => 'puppet_gem' }
-        package {'activesupport': provider => 'puppet_gem' }
+        package {'activesupport':
+            provider => 'puppet_gem',
+            ensure   => $activesupport_ver,
+        }
         package {'librarian-puppet':
             provider => 'puppet_gem',
             # wokraround for https://github.com/rodjek/librarian-puppet/issues/330

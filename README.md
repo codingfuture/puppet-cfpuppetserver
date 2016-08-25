@@ -166,6 +166,7 @@ on the same node.
 * `$memory_max = undef` - max memory in MB
 * `$cpu_weight = 100` - relative weight for auto-distribution of CPU resources
 * `$io_weight = 100` - relative weight for auto-distribution of I/O resources
+* `$activesupport_ver = '4.2.7.1'` - version of activesupport gem to install
 
 
 [cfnetwork]: https://github.com/codingfuture/puppet-cfnetwork
