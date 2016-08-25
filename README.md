@@ -29,6 +29,23 @@ can continue compiling new catalogs with the following command:
 /opt/puppetlabs/bin/puppet agent --test
 ```
 
+## Upgrade to puppetserver >= 2.5.0
+
+As there is incompatible change related to bootstrap.cfg, please use `cfpuppetserver` < v0.10 for puppetserver < 2.5.
+
+Upgrade procedures:
+
+* Update to `cfpuppetserver` >= v0.10
+* Manually deploy to current Puppet servers: `puppet agent -t`
+* Puppet Server will fail to restart in 180 seconds
+* Upgrade `puppetserver`/`puppetdb`/`puppet-agent` packages to latest versions
+* Manually start services:
+    * /bin/systemctl stop cfpuppetdb.service cfpuppetserver.service
+    * /bin/systemctl start cfpuppetdb.service cfpuppetserver.service
+* Wait for services to startup monitoring `netstat -pletn`
+* Try Puppet deployment
+
+
 ## Global Hiera config
 
 Puppet 4 has own implementation of lookup() which goes through:

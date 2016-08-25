@@ -47,6 +47,11 @@ Puppet::Type.type(:cf_puppetserver).provide(
         
         # Service File
         #==================================================
+        bootstrap_path = [
+            "#{conf_root_dir}/services.d/",
+            '/opt/puppetlabs/server/apps/puppetserver/config/services.d/'
+        ].join(',')
+
         content_ini = {
             'Unit' => {
                 'Description' => "CF PuppetServer",
@@ -61,7 +66,7 @@ Puppet::Type.type(:cf_puppetserver).provide(
                     "-cp /opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
                     'clojure.main -m puppetlabs.trapperkeeper.main',
                     '--config ', conf_dir,
-                    "-b #{conf_root_dir}/bootstrap.cfg",
+                    "-b '#{bootstrap_path}'",
                 ].join(' '),
                 'WorkingDirectory' => conf_root_dir,
             },
