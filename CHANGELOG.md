@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.2]
+- Removed PuppetDB defaults for `node-ttl` and `node-purge-ttl` as it
+    led to "vanished" nodes in not so actually maintained deployments.
+
 ## [0.10.1]
 - Fixed to install activesupport <5.0
 
