@@ -92,8 +92,10 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.10.2]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.2
 [0.10.1]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.1
 [0.10.0]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.0
+[0.9.7]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.7
 [0.9.6]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.6
 [0.9.5]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.5
 [0.9.4]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.9.4
