@@ -20,8 +20,9 @@ use_srv_records = false
 
 strict_environment_mode = true
 strict_hostname_checking = true
-strict = error
+strict = <%= $cfpuppetserver::puppetserver::strict %>
 strict_variables = true
+disable_warnings = <%= $cfpuppetserver::puppetserver::disable_warnings %>
 
 
 [master]

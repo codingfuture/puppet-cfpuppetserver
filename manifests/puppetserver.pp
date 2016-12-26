@@ -7,6 +7,8 @@ class cfpuppetserver::puppetserver (
     $cpu_weight = 100,
     $io_weight = 100,
     $activesupport_ver = '4.2.7.1',
+    ENUM['off', 'warning', 'error'] $strict = 'warning',
+    String[1] $disable_warnings = 'deprecations',
 ) {
     assert_private();
     
