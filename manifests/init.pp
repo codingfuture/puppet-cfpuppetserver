@@ -1,13 +1,14 @@
 
+# Please see README
 class cfpuppetserver (
     $deployuser = 'deploypuppet',
     $deployuser_auth_keys = undef,
     $repo_url = undef,
-    
+
     $puppetserver = true,
     $puppetdb = true,
     $postgresql = true,
-    
+
     $iface = 'any',
     $cluster = 'cfpuppet',
     $database = 'puppetdb',
@@ -19,16 +20,16 @@ class cfpuppetserver (
     include cfnetwork
     include cfsystem
     include cfsystem::custombin
-    
+
     #---
     include cfpuppetserver::postgresql
     include cfpuppetserver::puppetdb
     include cfpuppetserver::puppetserver
-    
+
     class { 'cfpuppetserver::internal::services':
         stage => 'deploy',
     }
-    
+
     #---
     file {"${cfsystem::custombin::bin_dir}/cf_gen_puppet_client_init":
         owner   => root,

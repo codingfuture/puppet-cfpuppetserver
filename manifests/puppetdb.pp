@@ -1,4 +1,5 @@
 
+# Please see README
 class cfpuppetserver::puppetdb (
     $use_proxy = 'secure',
     $port = 8081,
@@ -11,9 +12,9 @@ class cfpuppetserver::puppetdb (
     $settings_tune = {}
 ) {
     assert_private();
-    
+
     $puppetdb = $cfpuppetserver::puppetdb
-    
+
     cfnetwork::describe_service {'puppetdb': server => "tcp/${port}"}
 
     if is_bool($puppetdb) and $puppetdb {
@@ -28,36 +29,36 @@ class cfpuppetserver::puppetdb (
             min_mb => 128,
             max_mb => $memory_max,
         }
-        
+
         cfsystem_memory_weight { "${service_name}/conns":
             ensure => present,
             weight => 0,
             min_mb => $max_connections,
         }
-        
+
         # Firewall
         #---
         cfnetwork::service_port { 'local:puppetdb': }
         cfnetwork::client_port { 'local:puppetdb':
             user => ['root', 'puppet']
         }
-        
+
         if $cfpuppetserver::allow_update_check {
             cfnetwork::client_port { 'any:http:puppetdb_version':
                 user => ['puppetdb'],
-                dst => 'updates.puppetlabs.com'
+                dst  => 'updates.puppetlabs.com'
             }
         }
-        
+
         if !$cfpuppetserver::puppetserver {
             cfnetwork::service_port {
                 "${cfpuppetserver::iface}:puppetdb":
                     src => $cfsystem::puppet_host
             }
         }
-        
+
         $fqdn = $::fqdn
-        
+
         if $cert_whitelist {
             $q_cert_whitelist = $cert_whitelist
         } elsif $cfpuppetserver::puppetserver {
@@ -70,11 +71,11 @@ class cfpuppetserver::puppetdb (
                 $m << $r['certname']
             }
         }
-        
+
         #---
         $rwaccess_name = "${service_name}rw"
         $roaccess_name = "${service_name}ro"
-        
+
         cfdb::access{ $rwaccess_name:
             cluster         => $cluster,
             role            => $database,
@@ -99,14 +100,14 @@ class cfpuppetserver::puppetdb (
             fallback_db     => $database,
             distribute_load => true,
         }
-        
+
         if $cfpuppetserver::postgresql and !$::facts['cfdbaccess'][$cluster] and !$cfpuppetserver::is_secondary {
             Cfdb::Database["${cluster}/${database}"] -> Cfdb::Access[$rwaccess_name]
             Cfdb::Database["${cluster}/${database}"] -> Cfdb::Access[$roaccess_name]
             Cfdb::Role["${cluster}/${database}"] -> Cfdb::Access[$rwaccess_name]
             Cfdb::Role["${cluster}/${database}ro"] -> Cfdb::Access[$roaccess_name]
         }
-        
+
         #---
         package{ 'puppetdb': } ->
         group{ 'puppetdb': } ->
@@ -125,13 +126,13 @@ class cfpuppetserver::puppetdb (
             pki_dir => '/etc/puppetlabs/puppetdb/pki/',
         } ->
         cfpuppetserver::internal::cfpuppetdb { $service_name: }
-        
+
         if $cfpuppetserver::allow_update_check {
             cfnetwork::client_port { 'any:http:puppetdb_version':
                 user => ['puppet'],
-                dst => 'updates.puppetlabs.com'
+                dst  => 'updates.puppetlabs.com'
             }
-        }        
+        }
     } elsif $puppetdb {
         cfnetwork::client_port { 'any:puppetdb':
             user => ['root', 'puppet'],

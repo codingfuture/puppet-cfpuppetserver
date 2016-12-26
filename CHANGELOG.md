@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.3]
+- Changed to use `$strict=warning` and `$disable_warnings='deprecations'` by default
+- Added control of `$strict` and `$disable_warnings` options
+- Fixed validation warnings
+
 ## [0.10.2]
 - Removed PuppetDB defaults for `node-ttl` and `node-purge-ttl` as it
     led to "vanished" nodes in not so actually maintained deployments.

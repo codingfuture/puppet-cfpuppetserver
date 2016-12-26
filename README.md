@@ -167,6 +167,8 @@ on the same node.
 * `$cpu_weight = 100` - relative weight for auto-distribution of CPU resources
 * `$io_weight = 100` - relative weight for auto-distribution of I/O resources
 * `$activesupport_ver = '4.2.7.1'` - version of activesupport gem to install
+* `$strict = 'warning'` - goes directly to puppet.conf
+* `$disable_warnings = 'deprecations'` - goes directly to puppet.conf
 
 
 [cfnetwork]: https://github.com/codingfuture/puppet-cfnetwork

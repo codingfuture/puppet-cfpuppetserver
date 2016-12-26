@@ -1,17 +1,18 @@
 
+# Please see README
 class cfpuppetserver::postgresql(
     $settings_tune = {},
     $port = 5432,
     $node_id = undef,
     $password = undef,
-    
+
     $memory_weight = 200,
     $memory_max = undef,
     $cpu_weight = 200,
     $io_weight = 200,
 ) {
     assert_private();
-    
+
     if $cfpuppetserver::postgresql {
         $init_db_from = $::os['name'] ? {
             'Debian' => $::os['distro']['codename'] ? {
@@ -23,17 +24,31 @@ class cfpuppetserver::postgresql(
             },
             default => '',
         }
-        
-        
+
+
         $cfdb_settings = {
             secure_cluster => true,
             node_id => $node_id,
             init_db_from => $init_db_from,
         }
-    
+
+        $databases = $cfpuppetserver::is_secondary ? {
+            false   => {
+                "${cfpuppetserver::database}" => {
+                    roles => {
+                        ro => {
+                            readonly => true,
+                        }
+                    },
+                    ext   => ['pg_trgm'],
+                }
+            },
+            default => undef,
+        }
+
         class { 'cfdb::postgresql':
             default_extensions => false,
-            extensions2 => ['contrib'],
+            extensions2        => ['contrib'],
         } ->
         cfdb::instance{ $cfpuppetserver::cluster:
             type          => 'postgresql',
@@ -44,19 +59,7 @@ class cfpuppetserver::postgresql(
             settings_tune => merge($settings_tune, {
                 cfdb => $cfdb_settings,
             }),
-            databases     => $cfpuppetserver::is_secondary ? {
-                false => {
-                    "${cfpuppetserver::database}" => {
-                        roles => {
-                            ro => {
-                                readonly => true,
-                            }
-                        },
-                        ext => ['pg_trgm'],
-                    }
-                },
-                default => undef,
-            },
+            databases     => $databases,
             memory_weight => $memory_weight,
             memory_max    => $memory_max,
             cpu_weight    => $cpu_weight,
