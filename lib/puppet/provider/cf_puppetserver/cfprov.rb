@@ -1,3 +1,7 @@
+#
+# Copyright 2016 (c) Andrey Galkin
+#
+
 
 require File.expand_path( '../../../../puppet_x/cf_puppet_server', __FILE__ )
 
