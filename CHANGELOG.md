@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.4]
+- Updated CF deps to v0.10.x
+
 ## [0.10.3]
 - Changed to use `$strict=warning` and `$disable_warnings='deprecations'` by default
 - Added control of `$strict` and `$disable_warnings` options
@@ -97,6 +100,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.10.4]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.4
+[0.10.3]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.3
 [0.10.2]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.2
 [0.10.1]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.1
 [0.10.0]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.0
