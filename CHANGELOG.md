@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.10.5]
 - Improved server & client bootstrap scripts
 - Fixed minor issues in bootstrap process
+- Disabled deprecated PuppetDB configuration directives
 
 ## [0.10.4]
 - Updated CF deps to v0.10.x
