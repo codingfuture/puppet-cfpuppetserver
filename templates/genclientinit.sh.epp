@@ -4,6 +4,9 @@ certname=$1
 cflocation=$2
 cflocationpool=$3
 http_proxy=$4
+puppet_host='<%= $puppet_host %>'
+puppet_ca_host=$puppet_host
+puppet_env=production
 
 if test -z "$certname"; then
     echo "Usage: $(basename $0) <certname> [<cflocation> [<cflocationpool> [<http_proxy>]]]"
@@ -13,6 +16,9 @@ fi
 cat <<EOAT
 bash <<EOT
 #!/bin/bash
+
+set -ex
+export DEBIAN_FRONTEND=noninteractive
 
 http_proxy=$http_proxy
 
@@ -49,27 +55,67 @@ if test -z "\\\$codename"; then
     exit 1
 fi
 
-wget https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb
+puppetlabs_deb="puppetlabs-release-pc1-\\\${codename}.deb"
+echo "Retrieving \\\$puppetlabs_deb"
+
+if ! wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb; then
+    case "\\\$(lsb_release -is)" in
+        Debian) codename='jessie';;
+        Ubuntu) codename='xenial';;
+    esac
+    
+    puppetlabs_deb="puppetlabs-release-pc1-\\\${codename}.deb"
+    echo "Re-retrieving \\\$puppetlabs_deb"
+
+    wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb || (
+        echo "Failed to retrieve puppetlabs release for \\\${codename}";
+        exit 1
+    )
+fi
+
 dpkg -i puppetlabs-release-pc1-\\\${codename}.deb
 
 mkdir -p /etc/puppetlabs/puppet
 
 cat > /etc/puppetlabs/puppet/puppet.conf <<EOF
 [main]
+client = false
 certname = $certname
-server = <%= $puppet_host %>
-ca_server = <%= $puppet_host %>
-environment = production
+server = $puppet_host
+ca_server = $puppet_ca_host
+environment = $puppet_env
 EOF
 
-apt-get update &&
-    apt-get install puppet-agent
+cat >/etc/apt/preferences.d/puppetlabs.pref <<EOF
+Package: *
+Pin: origin apt.puppetlabs.com
+Pin-Priority: 1001
+EOF
 
-while ! /opt/puppetlabs/bin/puppet agent --test --wairforcert 120; do
+apt-get update
+apt-get install \
+        -f -y \
+        -o Dpkg::Options::="--force-confold" \
+        puppet-agent
+
+PUPPET=/opt/puppetlabs/bin/puppet
+    
+\\\$PUPPET resource service puppet ensure=false enable=false
+systemctl mask puppet
+
+if ! host maint.example.com > /dev/null; then
+    \\\$PUPPET resource host $certname ip=\\\$(/opt/puppetlabs/bin/facter networking.ip)
+fi
+
+while ! \\\$PUPPET agent --test; do
     echo "Please go to puppetserver and exec the following command when we wait for key"
     echo "> puppet cert sign $certname"
     echo "Use CTRL+C to stop cycle, if fails due to different reasons"
     sleep 5
+    
+    if test -n "\\\$INIT_ONESHOT"; then
+        exit 0
+    fi
 done
 EOT
 EOAT

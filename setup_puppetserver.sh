@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
+set -ex
 
 repourl=$1
 certname=${2:-$(hostname --fqdn)}
@@ -34,7 +36,7 @@ fi
 echo $certname > /etc/hostname
 hostname $certname
 
-if ! which lsb-release | read; then
+if ! which lsb-release >/dev/null; then
     apt-get install -y lsb-release
 fi
 
@@ -50,7 +52,23 @@ fi
 
 puppetlabs_deb="puppetlabs-release-pc1-${codename}.deb"
 echo "Retrieving $puppetlabs_deb"
-wget -q https://apt.puppetlabs.com/$puppetlabs_deb
+
+
+if ! wget -q https://apt.puppetlabs.com/$puppetlabs_deb; then
+    case "\\\$(lsb_release -is)" in
+        Debian) codename='jessie';;
+        Ubuntu) codename='xenial';;
+    esac
+    
+    puppetlabs_deb="puppetlabs-release-pc1-${codename}.deb"
+    echo "Re-retrieving $puppetlabs_deb"
+
+    wget -q https://apt.puppetlabs.com/$puppetlabs_deb || (
+        echo "Failed to retrieve puppetlabs release for \\\${codename}";
+        exit 1
+    )
+fi
+
 echo "Installing $puppetlabs_deb"
 dpkg -i $puppetlabs_deb
 
@@ -58,6 +76,7 @@ mkdir -p /etc/puppetlabs/puppet
 
 cat >/etc/puppetlabs/puppet/puppet.conf <<EOF
 [main]
+client = false
 certname = $certname
 server = $certname
 ca_server = $certname
@@ -77,6 +96,12 @@ autosign = $autosign
 
 EOF
 
+cat >/etc/apt/preferences.d/puppetlabs.pref <<EOF
+Package: *
+Pin: origin apt.puppetlabs.com
+Pin-Priority: 1001
+EOF
+
 echo "Running apt-get update ..."
 apt-get update || exit 1
 
@@ -93,13 +118,21 @@ psmem=$(( $totalmem / 4 ))
 # Setup self
 #---
 PUPPET=/opt/puppetlabs/bin/puppet
+GEM=/opt/puppetlabs/puppet/bin/gem
+
+echo "Disabling puppet agent"
+$PUPPET resource service puppet ensure=false enable=false
+systemctl mask puppet
 
 echo "Installing puppetserver"
 $PUPPET resource package puppetserver ensure=latest
+$PUPPET resource package puppetdb-termini ensure=latest
+$PUPPET resource service puppetdb ensure=running enable=true
 sed -i -e "s/^.*JAVA_ARGS.*$/JAVA_ARGS=\"-Xms${psmem}m -Xmx${psmem}m\"/g" \
     /etc/default/puppetserver
 echo "Running puppetserver & agent to generate SSL keys for PuppetDB"
 $PUPPET resource service puppetserver ensure=running enable=true
+$PUPPET resource host $certname ip=$(/opt/puppetlabs/bin/facter networking.ip)
 $PUPPET agent --test
 
 # Setup postgres
@@ -123,7 +156,7 @@ done
 sed -i -e "s/^.*shared_buffers.*$/shared_buffers = ${psmem}MB/g" \
     /etc/postgresql/*/main/postgresql.conf
 
-service postgresql restart
+systemctl restart postgresql
 
 # Setup puppet DB
 #---
@@ -140,14 +173,9 @@ username = puppetdb
 password = puppetdb
 log-slow-statements = 10
 EOCONF
-$PUPPET resource service puppetdb ensure=running enable=true
-service puppetdb restart
+systemctl restart puppetdb
 
 # Connect PuppetMaster to PuppetDB
-$PUPPET resource package puppetdb-terminus ensure=latest
-grep $certname /etc/hosts | read || \
-    $PUPPET resource host $certname ip=$(/opt/puppetlabs/bin/facter networking.ip)
-
 cat >>/etc/puppetlabs/puppet/puppet.conf <<EOCONF
 
 # puppetdb-related
@@ -190,7 +218,7 @@ cat >/etc/puppetlabs/code/hieradata/global.yaml <<EOCONF
 # TO BE OVERWRITTEN
 EOCONF
 
-chown -R puppet:puppet `puppet config print confdir`
+chown -R puppet:puppet `$PUPPET config print confdir`
 chown -R puppet:puppet /etc/puppetlabs/code
 
 echo "Enabling puppetdb & puppetserver services"
@@ -230,14 +258,11 @@ chown -R puppet:puppet /etc/puppetlabs/code/environments/
 EOCONF
 chmod 750 /opt/codingfuture/bin/cf_r10k_deploy
 
-/opt/puppetlabs/puppet/bin/gem install r10k
+$GEM install r10k
 
 echo "Installing librarian-puppet"
-/opt/puppetlabs/puppet/bin/gem install activesupport
-/opt/puppetlabs/puppet/bin/gem install librarian-puppet
+$GEM install activesupport --version '<5'
+$GEM install librarian-puppet
 
 echo "Restarting puppetdb & puppetserver"
-service puppetdb restart
-service puppetserver restart
-#---
-true
+systemctl restart puppetdb puppetserver
