@@ -100,7 +100,7 @@ apt-get install \
 
 PUPPET=/opt/puppetlabs/bin/puppet
     
-\\\$PUPPET resource service puppet ensure=false enable=false
+\\\$PUPPET resource service puppet ensure=false enable=false provider=systemd
 systemctl mask puppet
 
 if ! host maint.example.com > /dev/null; then

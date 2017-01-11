@@ -18,17 +18,25 @@ class cfpuppetserver::postgresql(
     assert_private();
 
     if $cfpuppetserver::postgresql {
-        $init_db_from = $::os['name'] ? {
-            'Debian' => $::os['distro']['codename'] ? {
-                'jessie' => '9.4:/var/lib/postgresql/9.4/main/',
-                default => '9.5:/var/lib/postgresql/9.5/main/',
+        $psql_version = $::facts['operatingsystem'] ? {
+            'Debian' => $::facts['operatingsystemrelease'] ? {
+                '8'     => '9.4',
+                '9'     => '9.6',
+                default => '9.6',
             },
-            'Ubuntu' => $::os['distro']['codename'] ? {
-                default => '9.5:/var/lib/postgresql/9.5/main/'
+            'Ubuntu' => $::facts['operatingsystemrelease'] ? {
+                '15.10' => '9.4',
+                '16.04' => '9.5',
+                '16.10' => '9.5',
+                default => '9.5',
             },
-            default => '',
+            default  => undef
         }
 
+        $init_db_from = empty($psql_version) ? {
+            true    => '',
+            default => "${psql_version}:/var/lib/postgresql/${psql_version}/main/"
+        }
 
         $cfdb_settings = {
             secure_cluster => true,

@@ -121,17 +121,17 @@ PUPPET=/opt/puppetlabs/bin/puppet
 GEM=/opt/puppetlabs/puppet/bin/gem
 
 echo "Disabling puppet agent"
-$PUPPET resource service puppet ensure=false enable=false
+$PUPPET resource service puppet ensure=false enable=false provider=systemd
 systemctl mask puppet
 
 echo "Installing puppetserver"
 $PUPPET resource package puppetserver ensure=latest
 $PUPPET resource package puppetdb-termini ensure=latest
-$PUPPET resource service puppetdb ensure=running enable=true
+$PUPPET resource service puppetdb ensure=running enable=true provider=systemd
 sed -i -e "s/^.*JAVA_ARGS.*$/JAVA_ARGS=\"-Xms${psmem}m -Xmx${psmem}m\"/g" \
     /etc/default/puppetserver
 echo "Running puppetserver & agent to generate SSL keys for PuppetDB"
-$PUPPET resource service puppetserver ensure=running enable=true
+$PUPPET resource service puppetserver ensure=running enable=true provider=systemd
 $PUPPET resource host $certname ip=$(/opt/puppetlabs/bin/facter networking.ip)
 $PUPPET agent --test
 
