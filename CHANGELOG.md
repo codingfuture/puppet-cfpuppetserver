@@ -7,6 +7,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Improved server & client bootstrap scripts
 - Fixed minor issues in bootstrap process
 - Disabled deprecated PuppetDB configuration directives
+- Fixed to properly use PermSize for JVM7 and MetaspaceSize for JVM8+
+- Updated minimal memory for PuppetDB & PuppetServer to 512MB
 
 ## [0.10.4]
 - Updated CF deps to v0.10.x

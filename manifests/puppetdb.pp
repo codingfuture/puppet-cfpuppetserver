@@ -9,7 +9,7 @@ class cfpuppetserver::puppetdb (
     $port = 8081,
     $max_connections = 30,
     $memory_weight = 100,
-    $memory_max = 256,
+    $memory_max = 512,
     $cpu_weight = 100,
     $io_weight = 100,
     $cert_whitelist = undef,
@@ -30,7 +30,7 @@ class cfpuppetserver::puppetdb (
         cfsystem_memory_weight { $service_name:
             ensure => present,
             weight => $memory_weight,
-            min_mb => 128,
+            min_mb => 512,
             max_mb => $memory_max,
         }
 

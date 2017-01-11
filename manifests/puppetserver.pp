@@ -51,7 +51,7 @@ class cfpuppetserver::puppetserver (
         cfsystem_memory_weight { $service_name:
             ensure => present,
             weight => $memory_weight,
-            min_mb => 192,
+            min_mb => 512,
             max_mb => $memory_max,
         }
 

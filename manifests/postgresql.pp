@@ -10,7 +10,7 @@ class cfpuppetserver::postgresql(
     $node_id = undef,
     $password = undef,
 
-    $memory_weight = 200,
+    $memory_weight = 100,
     $memory_max = undef,
     $cpu_weight = 200,
     $io_weight = 200,

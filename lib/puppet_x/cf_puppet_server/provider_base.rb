@@ -17,5 +17,19 @@ module PuppetX::CfPuppetServer
             
             fail("Failed to wait for #{service_name} startup")
         end
+        
+        def self.is_jvm_metaspace
+            res = Puppet::Util::Execution.execute(
+                ['/usr/bin/java', '-XX:MaxMetaspaceSize=8m', '-version'],
+                {
+                    :failonfail => false,
+                    :squelch => true,
+                    :uid => 'puppet',
+                    :gid => 'puppet',
+                }
+            )
+            
+            res.exitstatus == 0
+        end
     end
 end
