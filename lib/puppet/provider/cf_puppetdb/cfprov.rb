@@ -66,7 +66,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
         if is_jvm_metaspace
             meta_mem = (avail_mem * 0.2).to_i
             meta_mem = cf_system.fitRange(256, avail_mem, meta_mem)
-            meta_param = 'MetaspaceSize='
+            meta_param = 'MetaspaceSize'
         else
             meta_mem = (avail_mem * 0.05).to_i
             meta_mem = cf_system.fitRange(256, avail_mem, meta_mem)
@@ -194,8 +194,8 @@ Puppet::Type.type(:cf_puppetdb).provide(
                     '-Djava.security.egd=/dev/urandom',
                     "-Xms#{(heap_mem/2).to_i}m",
                     "-Xmx#{heap_mem}m",
-                    "-XX:#{meta_param}#{(meta_mem/2).to_i}m",
-                    "-XX:Max#{meta_param}#{meta_mem}m",
+                    "-XX:#{meta_param}=#{(meta_mem/2).to_i}m",
+                    "-XX:Max#{meta_param}=#{meta_mem}m",
                     "-cp /opt/puppetlabs/server/apps/puppetdb/puppetdb.jar",
                     'clojure.main -m puppetlabs.puppetdb.main',
                     '--config ', conf_dir,
