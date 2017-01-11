@@ -49,7 +49,7 @@ Puppet::Type.type(:cf_puppetserver).provide(
             meta_param = 'MetaspaceSize='
         else
             meta_mem = (avail_mem * 0.05).to_i
-            meta_mem = cf_system.fitRange(64, avail_mem, meta_mem)
+            meta_mem = cf_system.fitRange(256, avail_mem, meta_mem)
             meta_param = 'PermSize'
         end
         
