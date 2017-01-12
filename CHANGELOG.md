@@ -9,6 +9,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Disabled deprecated PuppetDB configuration directives
 - Fixed to properly use PermSize for JVM7 and MetaspaceSize for JVM8+
 - Updated minimal memory for PuppetDB & PuppetServer to 512MB
+- Updated to cfsystem:0.10.1, cfdb:0.10.1
 
 ## [0.10.4]
 - Updated CF deps to v0.10.x
