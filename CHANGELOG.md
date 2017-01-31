@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.10.6]
+- Added dependency on cfnetwork:firewall anchor for cfpuppetdb/cfpuppetserver
+
 ## [0.10.5]
 - Improved server & client bootstrap scripts
 - Fixed minor issues in bootstrap process
@@ -108,6 +111,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 Initial release
 
+[0.10.6]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.6
 [0.10.5]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.5
 [0.10.4]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.4
 [0.10.3]: https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.10.3

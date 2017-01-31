@@ -36,6 +36,7 @@ define cfpuppetserver::internal::cfpuppetdb {
             Cfdb::Access[$cfpuppetserver::puppetdb::roaccess_name],
             Cfpuppetserver::Internal::Dbaccess[$cfpuppetserver::puppetdb::rwaccess_name],
             Cfpuppetserver::Internal::Dbaccess[$cfpuppetserver::puppetdb::roaccess_name],
+            Anchor['cfnetwork:firewall'],
         ]
     }
 }

@@ -101,6 +101,7 @@ class cfpuppetserver::puppetserver (
             service_name => $service_name,
             cpu_weight   => $cpu_weight,
             io_weight    => $io_weight,
+            require      => Anchor['cfnetwork:firewall'],
         }
 
         cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }
