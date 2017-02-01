@@ -5,15 +5,23 @@
 
 # Please see README
 class cfpuppetserver::postgresql(
-    $settings_tune = {},
-    $port = 5432,
-    $node_id = undef,
-    $password = undef,
+    Hash
+        $settings_tune = {},
+    Integer[1, 65535]
+        $port = 5432,
+    Optional[Integer]
+        $node_id = undef,
+    Optional[String[1]]
+        $password = undef,
 
-    $memory_weight = 100,
-    $memory_max = undef,
-    $cpu_weight = 200,
-    $io_weight = 200,
+    Integer[1]
+        $memory_weight = 100,
+    Optional[Integer[1]]
+        $memory_max = undef,
+    Integer[1,25600]
+        $cpu_weight = 200,
+    Integer[1,200]
+        $io_weight = 200,
 ) {
     assert_private();
 

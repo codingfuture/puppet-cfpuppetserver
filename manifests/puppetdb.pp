@@ -5,13 +5,22 @@
 
 # Please see README
 class cfpuppetserver::puppetdb (
-    $use_proxy = 'secure',
-    $port = 8081,
-    $max_connections = 30,
-    $memory_weight = 100,
-    $memory_max = 512,
-    $cpu_weight = 100,
-    $io_weight = 100,
+    Variant[Boolean, Enum['auto', 'secure', 'insecure']]
+        $use_proxy = 'secure',
+    Optional[Integer[1,65535]]
+        $port = 8081,
+    Integer[1]
+        $max_connections = 30,
+
+    Integer[1]
+        $memory_weight = 100,
+    Optional[Integer[1]]
+        $memory_max = 512,
+    Integer[1,25600]
+        $cpu_weight = 100,
+    Integer[1,200]
+        $io_weight = 100,
+
     $cert_whitelist = undef,
     $settings_tune = {}
 ) {

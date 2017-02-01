@@ -5,14 +5,21 @@
 
 # Please see README
 class cfpuppetserver::puppetserver (
-    $autosign = false,
-    $global_hiera_config = 'cfpuppetserver/hiera.yaml',
-    $memory_weight = 100,
-    $memory_max = undef,
-    $cpu_weight = 100,
-    $io_weight = 100,
-    $activesupport_ver = '4.2.7.1',
-    ENUM['off', 'warning', 'error'] $strict = 'warning',
+    Boolean
+        $autosign = false,
+    String[1]
+        $global_hiera_config = 'cfpuppetserver/hiera.yaml',
+    Integer[1]
+        $memory_weight = 100,
+    Optional[Integer[1]]
+        $memory_max = undef,
+    Integer[1,25600]
+        $cpu_weight = 100,
+    Integer[1,200]
+        $io_weight = 100,
+    String[1]
+        $activesupport_ver = '4.2.7.1',
+    Enum['off', 'warning', 'error'] $strict = 'warning',
     String[1] $disable_warnings = 'deprecations',
 ) {
     assert_private();

@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.10.6]
 - Added dependency on cfnetwork:firewall anchor for cfpuppetdb/cfpuppetserver
+- Enforced public parameter types
 
 ## [0.10.5]
 - Improved server & client bootstrap scripts

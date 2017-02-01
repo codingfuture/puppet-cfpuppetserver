@@ -5,20 +5,32 @@
 
 # Please see README
 class cfpuppetserver (
-    $deployuser = 'deploypuppet',
-    $deployuser_auth_keys = undef,
-    $repo_url = undef,
+    String[1]
+        $deployuser = 'deploypuppet',
+    Optional[Hash]
+        $deployuser_auth_keys = undef,
+    Optional[String[1]]
+        $repo_url = undef,
 
-    $puppetserver = true,
-    $puppetdb = true,
-    $postgresql = true,
+    Boolean
+        $puppetserver = true,
+    Boolean
+        $puppetdb = true,
+    Boolean
+        $postgresql = true,
 
-    $iface = 'any',
-    $cluster = 'cfpuppet',
-    $database = 'puppetdb',
-    $is_cluster = false,
-    $is_secondary = false,
-    $allow_update_check = false,
+    String[1]
+        $iface = 'any',
+    String[1]
+        $cluster = 'cfpuppet',
+    String[1]
+        $database = 'puppetdb',
+    Boolean
+        $is_cluster = false,
+    Boolean
+        $is_secondary = false,
+    Boolean
+        $allow_update_check = false,
 ) {
     include stdlib
     include cfnetwork
