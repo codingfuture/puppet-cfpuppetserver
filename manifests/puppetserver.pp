@@ -131,7 +131,9 @@ class cfpuppetserver::puppetserver (
         }
 
         #======================================================================
-        file {"${cfsystem::custombin::bin_dir}/cf_r10k_deploy":
+        $cf_r10k_deploy = "${cfsystem::custombin::bin_dir}/cf_r10k_deploy"
+
+        file { $cf_r10k_deploy:
             owner   => 'root',
             group   => 'root',
             mode    => '0750',
@@ -187,17 +189,12 @@ class cfpuppetserver::puppetserver (
             group   => $deployuser,
             mode    => '0750',
             content => "#!/bin/sh
-sudo ${cfsystem::custombin::bin_dir}/cf_r10k_deploy
+sudo ${cf_r10k_deploy}
 "
         }
 
-        file {"/etc/sudoers.d/${deployuser}":
-            group   => root,
-            owner   => root,
-            mode    => '0400',
-            content => "
-${deployuser} ALL=(ALL:ALL) NOPASSWD: ${cfsystem::custombin::bin_dir}/cf_r10k_deploy
-",
+        cfauth::sudoentry { $deployuser:
+            command => $cf_r10k_deploy,
         }
 
         if $deployuser_auth_keys {
