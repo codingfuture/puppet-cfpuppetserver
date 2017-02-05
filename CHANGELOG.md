@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.11.0]
+- Fixed to properly handle PuppetDB-cfdb config
 - Added dependency on cfnetwork:firewall anchor for cfpuppetdb/cfpuppetserver
 - Enforced public parameter types
 - Updated to use cfauth::sudoentry

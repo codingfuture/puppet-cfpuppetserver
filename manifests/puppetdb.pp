@@ -114,13 +114,6 @@ class cfpuppetserver::puppetdb (
             distribute_load => true,
         }
 
-        if $cfpuppetserver::postgresql and !$::facts['cfdbaccess'][$cluster] and !$cfpuppetserver::is_secondary {
-            Cfdb::Database["${cluster}/${database}"] -> Cfdb::Access[$rwaccess_name]
-            Cfdb::Database["${cluster}/${database}"] -> Cfdb::Access[$roaccess_name]
-            Cfdb::Role["${cluster}/${database}"] -> Cfdb::Access[$rwaccess_name]
-            Cfdb::Role["${cluster}/${database}ro"] -> Cfdb::Access[$roaccess_name]
-        }
-
         #---
         package{ 'puppetdb': } ->
         group{ 'puppetdb': } ->
@@ -138,7 +131,12 @@ class cfpuppetserver::puppetdb (
             user    => 'puppetdb',
             pki_dir => '/etc/puppetlabs/puppetdb/pki/',
         } ->
-        cfpuppetserver::internal::cfpuppetdb { $service_name: }
+        cfpuppetserver::internal::cfpuppetdb { $service_name:
+            require => [
+                Cfpuppetserver::Internal::Dbaccess[$rwaccess_name],
+                Cfpuppetserver::Internal::Dbaccess[$roaccess_name],
+            ]
+        }
 
         if $cfpuppetserver::allow_update_check {
             cfnetwork::client_port { 'any:http:puppetdb_version':
