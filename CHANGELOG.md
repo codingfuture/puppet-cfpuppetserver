@@ -8,6 +8,10 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Added dependency on cfnetwork:firewall anchor for cfpuppetdb/cfpuppetserver
 - Enforced public parameter types
 - Updated to use cfauth::sudoentry
+- Implemented JRuby pool flush on with cf_pupperserver_reload tool
+- Added cf_pupperserver_reload for systemd reload
+- Added cf_pupperserver_reload for deploy procedure
+- Minor refactoring
 
 ## [0.10.5]
 - Improved server & client bootstrap scripts

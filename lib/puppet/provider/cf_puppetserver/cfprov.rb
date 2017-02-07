@@ -12,10 +12,9 @@ Puppet::Type.type(:cf_puppetserver).provide(
 ) do
     desc "Provider for cfdb_access"
     
-    commands :sudo => '/usr/bin/sudo'
-    commands :systemctl => '/bin/systemctl'
-    commands :netstat => '/bin/netstat'
-    
+    commands :sudo => PuppetX::CfSystem::SUDO
+    commands :systemctl => PuppetX::CfSystem::SYSTEMD_CTL
+        
     def self.get_config_index
         'cf20puppet1server'
     end
@@ -85,6 +84,8 @@ Puppet::Type.type(:cf_puppetserver).provide(
                     '--config ', conf_dir,
                     "-b '#{bootstrap_path}'",
                 ].join(' '),
+                'ExecReload' => "#{PuppetX::CfSystem::CUSTOM_BIN_DIR}/cf_puppetserver_reload",
+                'ExecPostStart' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 180",
                 'WorkingDirectory' => conf_root_dir,
             },
         }

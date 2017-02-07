@@ -89,6 +89,12 @@ Usage: cf_gen_puppet_client_init <certname> [<cflocation> [<cflocationpool> [<ht
 ~# ssh deploypuppet@puppet.example.com sudo /opt/codingfuture/bin/cf_r10k_deploy
 ```
 
+### Manual fast refresh of PuppetServer JRuby instances
+
+```
+~# /opt/codingfuture/bin/cf_puppetserver_reload
+```
+
 
 ## Setup
 

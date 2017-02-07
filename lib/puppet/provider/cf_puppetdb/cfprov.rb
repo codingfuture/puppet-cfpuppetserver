@@ -12,10 +12,9 @@ Puppet::Type.type(:cf_puppetdb).provide(
 ) do
     desc "Provider for cfdb_access"
     
-    commands :sudo => '/usr/bin/sudo'
-    commands :systemctl => '/bin/systemctl'
+    commands :sudo => PuppetX::CfSystem::SUDO
+    commands :systemctl => PuppetX::CfSystem::SYSTEMD_CTL
     commands :df => '/bin/df'
-    commands :netstat => '/bin/netstat'
     
     def self.get_config_index
         'cf20puppet1db'
@@ -201,6 +200,8 @@ Puppet::Type.type(:cf_puppetdb).provide(
                     '--config ', conf_dir,
                     "-b #{conf_root_dir}/bootstrap.cfg",
                 ].join(' '),
+                'ExecReload' => '/bin/kill -USR2 $MAINPID',
+                'ExecPostStart' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8081 180",
                 'WorkingDirectory' => conf_root_dir,
             },
         }

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+/usr/bin/curl -q \
+    --cert /etc/puppetlabs/puppet/ssl/certs/<%= $::fqdn %>.pem \
+    --key /etc/puppetlabs/puppet/ssl/private_keys/<%= $::fqdn %>.pem \
+    --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
+    -X DELETE \
+    'https://<%= $::fqdn %>:8140/puppet-admin-api/v1/jruby-pool'

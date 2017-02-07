@@ -54,6 +54,7 @@ class cfpuppetserver::puppetserver (
         }).join(',')
 
         $service_name = 'cfpuppetserver'
+        $conf_dir = '/etc/puppetlabs/puppetserver/conf.d'
 
         cfsystem_memory_weight { $service_name:
             ensure => present,
@@ -78,11 +79,23 @@ class cfpuppetserver::puppetserver (
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
         } ->
-        file {'/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf':
+        file { "${conf_dir}/auth.conf":
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
-            content => epp('cfpuppetserver/puppetserver.conf.epp'),
+            content => epp('cfpuppetserver/puppetserver/auth.conf.epp')
+        } ->
+        file { "${conf_dir}/puppetserver.conf":
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => epp('cfpuppetserver/puppetserver/puppetserver.conf.epp'),
+        } ->
+        file { "${conf_dir}/webserver.conf":
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => epp('cfpuppetserver/puppetserver/webserver.conf.epp')
         } ->
         file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
@@ -131,13 +144,23 @@ class cfpuppetserver::puppetserver (
         }
 
         #======================================================================
+        $cf_puppetserver_reload = "${cfsystem::custombin::bin_dir}/cf_puppetserver_reload"
+        file { $cf_puppetserver_reload:
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0700',
+            content => epp('cfpuppetserver/cf_puppetserver_reload.epp')
+        } ->
+        Cf_puppetserver[$service_name]
+
+        #======================================================================
         $cf_r10k_deploy = "${cfsystem::custombin::bin_dir}/cf_r10k_deploy"
 
         file { $cf_r10k_deploy:
             owner   => 'root',
             group   => 'root',
             mode    => '0750',
-            content => file('cfpuppetserver/deploy.sh'),
+            content => epp('cfpuppetserver/deploy.sh.epp'),
         }
 
         package {'r10k': provider => 'puppet_gem' }
@@ -244,13 +267,6 @@ sudo ${cf_r10k_deploy}
                     '# puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
                 ].join("\n"),
             }
-        }
-
-        file { '/etc/puppetlabs/puppetserver/conf.d/webserver.conf':
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0644',
-            content => epp('cfpuppetserver/webserver.conf.epp')
         }
     }
 }

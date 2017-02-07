@@ -10,3 +10,4 @@ for penv in /etc/puppetlabs/code/environments/*; do
 done
 
 chown -R puppet:puppet /etc/puppetlabs/code/environments/
+<%= $cfpuppetserver::puppetserver::cf_puppetserver_reload %>
