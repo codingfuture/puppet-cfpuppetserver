@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/usr/bin/curl -q \
+/usr/bin/curl -s \
     --cert /etc/puppetlabs/puppet/ssl/certs/<%= $::fqdn %>.pem \
     --key /etc/puppetlabs/puppet/ssl/private_keys/<%= $::fqdn %>.pem \
     --cacert /etc/puppetlabs/puppet/ssl/certs/ca.pem \
