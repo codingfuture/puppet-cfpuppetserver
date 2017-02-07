@@ -9,7 +9,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Enforced public parameter types
 - Updated to use cfauth::sudoentry
 - Implemented JRuby pool flush on with cf_pupperserver_reload tool
-- Added cf_pupperserver_reload for systemd reload
+- Added full reload for puppetserver @ systemd
 - Added cf_pupperserver_reload for deploy procedure
 - Implemented puppetserver & puppetdb restart on package update
 - Minor refactoring

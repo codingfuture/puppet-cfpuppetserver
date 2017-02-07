@@ -147,9 +147,13 @@ class cfpuppetserver::puppetserver (
         $cf_puppetserver_reload = "${cfsystem::custombin::bin_dir}/cf_puppetserver_reload"
         file { $cf_puppetserver_reload:
             owner   => 'root',
-            group   => 'root',
-            mode    => '0700',
+            group   => 'puppet',
+            mode    => '0750',
             content => epp('cfpuppetserver/cf_puppetserver_reload.epp')
+        } ->
+        cfnetwork::client_port { 'local:puppet:reload':
+            dst  => $::fqdn,
+            user => 'puppet',
         } ->
         Cf_puppetserver[$service_name]
 
