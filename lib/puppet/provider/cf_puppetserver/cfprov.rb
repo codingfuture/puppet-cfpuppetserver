@@ -71,6 +71,7 @@ Puppet::Type.type(:cf_puppetserver).provide(
                 'Description' => "CF PuppetServer",
             },
             'Service' => {
+                '# Package Version' => PuppetX::CfSystem::Util.get_package_version('puppetserver'),
                 'ExecStart' => [
                     '/usr/bin/java',
                     '-XX:OnOutOfMemoryError=kill\s-9\s%%p',

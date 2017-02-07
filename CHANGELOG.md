@@ -11,6 +11,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Implemented JRuby pool flush on with cf_pupperserver_reload tool
 - Added cf_pupperserver_reload for systemd reload
 - Added cf_pupperserver_reload for deploy procedure
+- Implemented puppetserver & puppetdb restart on package update
 - Minor refactoring
 
 ## [0.10.5]

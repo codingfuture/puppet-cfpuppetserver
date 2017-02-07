@@ -187,6 +187,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
                 'Description' => "CF PuppetDB",
             },
             'Service' => {
+                '# Package Version' => PuppetX::CfSystem::Util.get_package_version('puppetdb'),
                 'ExecStart' => [
                     '/usr/bin/java',
                     '-XX:OnOutOfMemoryError=kill\s-9\s%%p',
