@@ -107,7 +107,7 @@ if ! host maint.example.com > /dev/null; then
     \\\$PUPPET resource host $certname ip=\\\$(/opt/puppetlabs/bin/facter networking.ip)
 fi
 
-while ! \\\$PUPPET agent --test; do
+while ! \\\$PUPPET agent --test --trace; do
     echo "Please go to puppetserver and exec the following command when we wait for key"
     echo "> puppet cert sign $certname"
     echo "Use CTRL+C to stop cycle, if fails due to different reasons"

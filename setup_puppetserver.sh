@@ -133,7 +133,7 @@ sed -i -e "s/^.*JAVA_ARGS.*$/JAVA_ARGS=\"-Xms${psmem}m -Xmx${psmem}m\"/g" \
 echo "Running puppetserver & agent to generate SSL keys for PuppetDB"
 $PUPPET resource service puppetserver ensure=running enable=true provider=systemd
 $PUPPET resource host $certname ip=$(/opt/puppetlabs/bin/facter networking.ip)
-$PUPPET agent --test
+$PUPPET agent --test --trace
 
 # Setup postgres
 #---

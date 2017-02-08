@@ -12,6 +12,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Added full reload for puppetserver @ systemd
 - Added cf_pupperserver_reload for deploy procedure
 - Implemented puppetserver & puppetdb restart on package update
+- Added --trace to provisioning scripts
 - Minor refactoring
 
 ## [0.10.5]
