@@ -181,7 +181,7 @@ cat >>/etc/puppetlabs/puppet/puppet.conf <<EOCONF
 # puppetdb-related
 storeconfigs = true
 storeconfigs_backend = puppetdb
-reports = store,puppetdb
+reports = puppetdb
 # TO BE OVERWRITTEN
 EOCONF
 cat >/etc/puppetlabs/puppet/puppetdb.conf <<EOCONF

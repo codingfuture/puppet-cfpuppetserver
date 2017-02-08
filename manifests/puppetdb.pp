@@ -21,8 +21,10 @@ class cfpuppetserver::puppetdb (
     Integer[1,200]
         $io_weight = 100,
 
-    $cert_whitelist = undef,
-    $settings_tune = {}
+    Optional[Variant[String[1], Array[String[1]]]]
+        $cert_whitelist = undef,
+    Hash
+        $settings_tune = {}
 ) {
     assert_private();
 
@@ -73,7 +75,7 @@ class cfpuppetserver::puppetdb (
         $fqdn = $::fqdn
 
         if $cert_whitelist {
-            $q_cert_whitelist = $cert_whitelist
+            $q_cert_whitelist = any2array($cert_whitelist)
         } elsif $cfpuppetserver::puppetserver {
             $q_cert_whitelist = [$fqdn]
         } else {
