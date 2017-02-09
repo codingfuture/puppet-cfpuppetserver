@@ -74,6 +74,7 @@ class cfpuppetserver::postgresql(
             type          => 'postgresql',
             is_cluster    => $cfpuppetserver::is_cluster,
             is_secondary  => $cfpuppetserver::is_secondary,
+            is_arbitrator => $cfpuppetserver::is_arbitrator,
             iface         => $cfpuppetserver::iface,
             port          => $port,
             settings_tune => merge($settings_tune, {

@@ -21,8 +21,8 @@ class cfpuppetserver::puppetdb (
     Integer[1,200]
         $io_weight = 100,
 
-    Optional[Variant[String[1], Array[String[1]]]]
-        $cert_whitelist = undef,
+    Variant[String[1], Array[String[1]]]
+        $cert_whitelist = [],
     Hash
         $settings_tune = {}
 ) {
@@ -65,26 +65,35 @@ class cfpuppetserver::puppetdb (
             }
         }
 
-        if !$cfpuppetserver::puppetserver {
-            cfnetwork::service_port {
-                "${cfpuppetserver::iface}:puppetdb":
-                    src => $cfsystem::puppet_host
-            }
+        $puppetserver_hosts = unique(
+            $cfpuppetserver::puppetserver_hosts +
+            [$cfsystem::puppet_host] +
+            ($cfpuppetserver::puppetserver ? {
+                true  => [$::fqdn],
+                false => [],
+            }) +
+            ($cfpuppetserver::autodiscovery ? {
+                true  => cf_query_resources(
+                    false,
+                    "Class['cfpuppetserver::puppetserver']",
+                    false
+                ).map |$v| { $v['certname'] },
+                false => [],
+            })
+        )
+
+        $q_cert_whitelist = unique(
+            any2array($cert_whitelist) +
+            $puppetserver_hosts
+        )
+
+        cfnetwork::ipset { 'cfpuppet_puppetserver':
+            addr => $puppetserver_hosts,
         }
 
-        $fqdn = $::fqdn
-
-        if $cert_whitelist {
-            $q_cert_whitelist = any2array($cert_whitelist)
-        } elsif $cfpuppetserver::puppetserver {
-            $q_cert_whitelist = [$fqdn]
-        } else {
-            $q_cert_whitelist = cf_query_resource(
-                "Class['cfpuppetserver']{ puppetdb = '${fqdn}'}",
-                "Class['cfpuppetserver::puppetserver']"
-            ).reduce([]) |$m, $r| {
-                $m << $r['certname']
-            }
+        cfnetwork::service_port {
+            "${cfpuppetserver::iface}:puppetdb":
+                src => 'ipset:cfpuppet_puppetserver'
         }
 
         #---

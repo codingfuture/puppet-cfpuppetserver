@@ -128,11 +128,16 @@ example of a complete infrastructure configuration and Vagrant provisioning.
 * `puppetserver = true` - if true then assume Puppet Server lives on this host (affects firewall)
 * `puppetdb = true` - if true then assume Puppet DB lives on this host (affects firewall)
 * `postgresql = true` - if true then PostgreSQL is setup on this node
+* `autodiscovery = true` - if true then other instances of PuppetDB & PuppetServers are automatically
+    discovered to be added for PuppetDB access / server_urls
+* `puppetdb_hosts = []` - statically provide PuppetDB hosts (for autodiscovery = false)
+* `puppetserver_hosts = []` - statically provide PuppetServer hosts (for autodiscovery = false)
 * `iface = 'any'` - `cfnetwork::iface` name to listen for incoming client connections
 * `cluster = 'cfpuppet'` - `cfdb` cluster to use
 * `database = 'puppetdb' - `cfdb::database` to use in cluster
 * `is_cluster = false` - goes directly to `cfdb::instance`
 * `is_secondary = false` - goes directly to `cfdb::instance`
+* `is_arbitrator = false` - goes directly to `cfdb::instance`
 * `allow_update_check = false` - open firewall to connect to updates.puppetlabs.com, if enabled
 
 ## `cfpuppetserver::postgresql` class
@@ -158,7 +163,7 @@ on the same node.
 * `$memory_max = 256` - max memory in MB
 * `$cpu_weight = 100` - relative weight for auto-distribution of CPU resources
 * `$io_weight = 100` - relative weight for auto-distribution of I/O resources
-* `$cert_whitelist = undef` - specify the CNs of Puppet PKI to be accepted.
+* `$cert_whitelist = []` - specify the CNs of Puppet PKI to be accepted.
     If not set:
     * if Puppet Server runs the same node then `[$fqdn]`
     * otherwise, all nodes with Puppet Server configured

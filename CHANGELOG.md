@@ -16,6 +16,10 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Minor refactoring
 - Changed to cache environment until refresh through cf_puppetserver_reload
 - Added pupetserver settings_tune
+- Added autodiscovery, puppetdb_hosts, puppetserver_hosts and is_arbitrator
+    parameters
+- Implemented autodiscovery of other instances
+- Changed, PuppetServer contacts all PuppetDB instances by default (autodiscovery)
 
 ## [0.10.5]
 - Improved server & client bootstrap scripts

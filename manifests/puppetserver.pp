@@ -43,16 +43,54 @@ class cfpuppetserver::puppetserver (
     $puppet_git_host = $puppet_git_host_parsed
 
     if $cfpuppetserver::puppetserver {
-        if is_bool($cfpuppetserver::puppetdb) {
-            $puppetdb_host = [$::fqdn]
-        } else {
-            $puppetdb_host = any2array($cfpuppetserver::puppetdb)
-        }
-
         $puppetdb_port = $cfpuppetserver::puppetdb::port
 
-        $puppetdb_server_urls = ($puppetdb_host.reduce([]) |$m, $host| {
-            $m << "https://${host}:${puppetdb_port}"
+        $puppetdb_static_hosts = $cfpuppetserver::puppetdb_hosts +
+            ($cfpuppetserver::puppetdb ? {
+                true    => [$::fqdn],
+                default => []
+            })
+
+        if $cfpuppetserver::autodiscovery {
+            $puppetdb_dynamic_hosts = cf_query_resources(
+                false,
+                "Cf_puppetdb[${cfpuppetserver::puppetdb::service_name}]",
+                false,
+            ).reduce([]) |$m, $v| {
+                $host_name = $v['certname']
+                $host_port = $v['parameters']['port']
+
+                if $host_port == $puppetdb_port {
+                    $m << $host_name
+                } else {
+                    notice { "cfpuppetserver:${host_name}":
+                        message  => "Port mismatch ${host_port} != ${puppetdb_port} for ${host_name}",
+                        loglevel => 'err',
+                    }
+                }
+            }
+        }else {
+            $puppetdb_dynamic_hosts = []
+        }
+
+        $puppetdb_hosts = unique($puppetdb_static_hosts + $puppetdb_dynamic_hosts)
+
+        if empty($puppetdb_hosts) {
+            fail('No PuppetDB hosts are known!')
+        }
+
+        cfnetwork::ipset { 'cfpuppet_puppetdb':
+            addr => $puppetdb_hosts,
+        }
+
+        cfnetwork::client_port { 'any:puppetdb':
+            user => ['root', 'puppet'],
+            dst  => 'ipset:cfpuppet_puppetdb',
+        }
+
+        #---
+        $puppetdb_server_urls = ($puppetdb_hosts.map |$host| {
+            "https://${host}:${puppetdb_port}"
         }).join(',')
 
         $service_name = 'cfpuppetserver'

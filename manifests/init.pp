@@ -19,6 +19,13 @@ class cfpuppetserver (
     Boolean
         $postgresql = true,
 
+    Boolean
+        $autodiscovery = true,
+    Variant[String[1], Array[String[1]]]
+        $puppetdb_hosts = [],
+    Variant[String[1], Array[String[1]]]
+        $puppetserver_hosts = [],
+
     String[1]
         $iface = 'any',
     String[1]
@@ -29,6 +36,8 @@ class cfpuppetserver (
         $is_cluster = false,
     Boolean
         $is_secondary = false,
+    Boolean
+        $is_arbitrator = false,
     Boolean
         $allow_update_check = false,
 ) {
