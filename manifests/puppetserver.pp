@@ -89,9 +89,14 @@ class cfpuppetserver::puppetserver (
         }
 
         #---
-        $puppetdb_server_urls = ($puppetdb_hosts.map |$host| {
-            "https://${host}:${puppetdb_port}"
-        }).join(',')
+        # if there is local PuppetDB, query only that
+        if $cfpuppetserver::puppetdb {
+            $server_urls = [$::fqdn]
+            $submit_only_server_urls = $puppetdb_hosts - $::fqdn
+        } else {
+            $server_urls = $puppetdb_hosts
+            $submit_only_server_urls = []
+        }
 
         $service_name = 'cfpuppetserver'
         $conf_dir = '/etc/puppetlabs/puppetserver/conf.d'
@@ -110,7 +115,12 @@ class cfpuppetserver::puppetserver (
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppetdb.conf.epp', {
-                server_urls => $puppetdb_server_urls,
+                server_urls             => $server_urls.map |$host| {
+                    "https://${host}:${puppetdb_port}"
+                },
+                submit_only_server_urls => $submit_only_server_urls.map |$host| {
+                    "https://${host}:${puppetdb_port}"
+                },
             }),
         } ->
         file {'/etc/puppetlabs/puppet/puppet.conf':

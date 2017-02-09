@@ -1,5 +1,12 @@
+<% |
+    Array[String[1]] $server_urls,
+    Array[String[1]] $submit_only_server_urls,
+| -%>
 [main]
-server_urls = <%= $server_urls %>
+server_urls = <%= $server_urls.join(',') %>
+<% if !empty($submit_only_server_urls) { -%>
+submit_only_server_urls = <%= $submit_only_server_urls.join(',') %>
+<% } -%>
 sticky_read_failover = true
 soft_write_failure = false
 command_broadcast = true
