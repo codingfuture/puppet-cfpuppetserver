@@ -175,6 +175,13 @@ on the same node.
 * `$activesupport_ver = '4.2.7.1'` - version of activesupport gem to install
 * `$strict = 'warning'` - goes directly to puppet.conf
 * `$disable_warnings = 'deprecations'` - goes directly to puppet.conf
+* `$settings_tune = {}` - optional tune, tree structure
+    * 'puppetserver'
+        * 'max-active-instances' = $::facts['processorcount'] + 1
+        * 'max-requests-per-instance' = 1000
+        * 'compile-mode' = 'off'
+        * 'connect-timeout-milliseconds' = 15000
+        * 'idle-timeout-milliseconds' = 600000
 
 
 [cfnetwork]: https://github.com/codingfuture/puppet-cfnetwork

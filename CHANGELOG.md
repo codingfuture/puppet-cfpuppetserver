@@ -14,6 +14,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - Implemented puppetserver & puppetdb restart on package update
 - Added --trace to provisioning scripts
 - Minor refactoring
+- Changed to cache environment until refresh through cf_puppetserver_reload
+- Added pupetserver settings_tune
 
 ## [0.10.5]
 - Improved server & client bootstrap scripts

@@ -50,6 +50,6 @@ storeconfigs_backend = puppetdb
 reports = puppetdb
 
 # optimize
-always_retry_plugins = true
+always_retry_plugins = false
 usecacheonfailure = false
-#environment_timeout = unlimited
+environment_timeout = unlimited

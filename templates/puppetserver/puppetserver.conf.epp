@@ -1,9 +1,15 @@
-<%
-if $::facts['processorcount'] > 1 {
-    $max_active_instances = $::facts['processorcount'] + 1
-} else {
-    $max_active_instances = 1
-}
+<% |
+    Hash $settings_tune
+|
+
+$max_active_instances = pick(
+    $settings_tune['max-active-instances'],
+    $::facts['processorcount'] ? {
+        1 => 1,
+        default => $::facts['processorcount'] + 1
+    }
+)
+
 -%>
 jruby-puppet: {
     ruby-load-path: [/opt/puppetlabs/puppet/lib/ruby/vendor_ruby]
@@ -14,9 +20,9 @@ jruby-puppet: {
     master-run-dir: /var/run/puppetlabs/puppetserver
     master-log-dir: /var/log/puppetlabs/puppetserver
     max-active-instances: <%= $max_active_instances  %>
-    max-requests-per-instance: 0
+    max-requests-per-instance: <%= pick($settings_tune['max-requests-per-instance'], '1000')  %>
     use-legacy-auth-conf: false
-    compile-mode: jit
+    compile-mode: <%= pick($settings_tune['compile-mode'], 'off')  %>
 }
 
 http-client: {
@@ -29,8 +35,8 @@ http-client: {
     #                TLS_RSA_WITH_AES_128_CBC_SHA256,
     #                TLS_RSA_WITH_AES_128_CBC_SHA]
     
-    connect-timeout-milliseconds: 15000
-    idle-timeout-milliseconds: 600000
+    connect-timeout-milliseconds: <%= pick($settings_tune['connect-timeout-milliseconds'], '15000')  %>
+    idle-timeout-milliseconds: <%= pick($settings_tune['idle-timeout-milliseconds'], '600000')  %>
 }
 
 profiler: {

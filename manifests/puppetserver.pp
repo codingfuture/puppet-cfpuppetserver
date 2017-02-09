@@ -21,6 +21,8 @@ class cfpuppetserver::puppetserver (
         $activesupport_ver = '4.2.7.1',
     Enum['off', 'warning', 'error'] $strict = 'warning',
     String[1] $disable_warnings = 'deprecations',
+    Hash
+        $settings_tune = {}
 ) {
     assert_private();
 
@@ -89,7 +91,9 @@ class cfpuppetserver::puppetserver (
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
-            content => epp('cfpuppetserver/puppetserver/puppetserver.conf.epp'),
+            content => epp('cfpuppetserver/puppetserver/puppetserver.conf.epp', {
+                settings_tune => pick($settings_tune['puppetserver'], {}),
+            }),
         } ->
         file { "${conf_dir}/webserver.conf":
             owner   => 'puppet',
