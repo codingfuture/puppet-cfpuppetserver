@@ -20,6 +20,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
     parameters
 - Implemented autodiscovery of other instances
 - Changed, PuppetServer contacts all PuppetDB instances by default (autodiscovery)
+- Added PuppetServer msgpack support
 
 ## [0.10.5]
 - Improved server & client bootstrap scripts

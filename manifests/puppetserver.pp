@@ -110,6 +110,10 @@ class cfpuppetserver::puppetserver (
 
         package { 'puppetserver': } ->
         package { 'puppetdb-termini': } ->
+        package { 'msgpack':
+            ensure   => present,
+            provider => puppetserver_gem,
+        } ->
         file {'/etc/puppetlabs/puppet/puppetdb.conf':
             owner   => 'puppet',
             group   => 'puppet',
