@@ -73,11 +73,12 @@ class cfpuppetserver::puppetdb (
                 false => [],
             }) +
             ($cfpuppetserver::autodiscovery ? {
-                true  => cf_query_resources(
-                    false,
-                    "Class['cfpuppetserver::puppetserver']",
-                    false
-                ).map |$v| { $v['certname'] },
+                true  => cfsystem::query([
+                    'from', 'resources', ['extract', [ 'certname' ],
+                        ['and',
+                            ['=', 'type', 'Cf_puppetserver'],
+                        ],
+                ]]).map |$v| { $v['certname'] },
                 false => [],
             })
         )

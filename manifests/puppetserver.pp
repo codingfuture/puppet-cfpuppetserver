@@ -52,11 +52,12 @@ class cfpuppetserver::puppetserver (
             })
 
         if $cfpuppetserver::autodiscovery {
-            $puppetdb_dynamic_hosts = cf_query_resources(
-                false,
-                "Cf_puppetdb[${cfpuppetserver::puppetdb::service_name}]",
-                false,
-            ).reduce([]) |$m, $v| {
+            $puppetdb_dynamic_hosts = cfsystem::query([
+                'from', 'resources', ['extract', [ 'certname', 'parameters' ],
+                    ['and',
+                        ['=', 'type', 'Cf_puppetdb'],
+                    ],
+            ]]).reduce([]) |$m, $v| {
                 $host_name = $v['certname']
                 $host_port = $v['parameters']['port']
 
