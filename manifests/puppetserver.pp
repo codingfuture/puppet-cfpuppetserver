@@ -13,9 +13,9 @@ class cfpuppetserver::puppetserver (
         $memory_weight = 100,
     Optional[Integer[1]]
         $memory_max = undef,
-    Integer[1,25600]
+    Cfsystem::CpuWeight
         $cpu_weight = 100,
-    Integer[1,200]
+    Cfsystem::IoWeight
         $io_weight = 100,
     String[1]
         $activesupport_ver = '4.2.7.1',
@@ -28,7 +28,7 @@ class cfpuppetserver::puppetserver (
 
     #---
     if $cfpuppetserver::repo_url {
-        $repo_url_parsed = cfpuppetserver_uriparse($cfpuppetserver::repo_url)
+        $repo_url_parsed = cfpuppetserver::uriparse($cfpuppetserver::repo_url)
 
         if $repo_url_parsed {
             $puppet_git_host_parsed = $repo_url_parsed['host']

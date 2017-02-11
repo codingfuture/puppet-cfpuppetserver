@@ -7,7 +7,7 @@
 class cfpuppetserver::puppetdb (
     Variant[Boolean, Enum['auto', 'secure', 'insecure']]
         $use_proxy = 'secure',
-    Optional[Integer[1,65535]]
+    Optional[Cfnetwork::Port]
         $port = 8081,
     Integer[1]
         $max_connections = 30,
@@ -16,9 +16,9 @@ class cfpuppetserver::puppetdb (
         $memory_weight = 100,
     Optional[Integer[1]]
         $memory_max = 512,
-    Integer[1,25600]
+    Cfsystem::CpuWeight
         $cpu_weight = 100,
-    Integer[1,200]
+    Cfsystem::IoWeight
         $io_weight = 100,
 
     Variant[String[1], Array[String[1]]]

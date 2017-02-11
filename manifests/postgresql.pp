@@ -7,7 +7,7 @@
 class cfpuppetserver::postgresql(
     Hash
         $settings_tune = {},
-    Integer[1, 65535]
+    Cfnetwork::Port
         $port = 5432,
     Optional[Integer]
         $node_id = undef,
@@ -18,9 +18,9 @@ class cfpuppetserver::postgresql(
         $memory_weight = 100,
     Optional[Integer[1]]
         $memory_max = undef,
-    Integer[1,25600]
+    Cfsystem::CpuWeight
         $cpu_weight = 200,
-    Integer[1,200]
+    Cfsystem::IoWeight
         $io_weight = 200,
 ) {
     assert_private();
