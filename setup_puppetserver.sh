@@ -127,7 +127,6 @@ systemctl mask puppet
 echo "Installing puppetserver"
 $PUPPET resource package puppetserver ensure=latest
 $PUPPET resource package puppetdb-termini ensure=latest
-$PUPPET resource service puppetdb ensure=running enable=true provider=systemd
 sed -i -e "s/^.*JAVA_ARGS.*$/JAVA_ARGS=\"-Xms${psmem}m -Xmx${psmem}m\"/g" \
     /etc/default/puppetserver
 echo "Running puppetserver & agent to generate SSL keys for PuppetDB"
@@ -173,6 +172,7 @@ username = puppetdb
 password = puppetdb
 log-slow-statements = 10
 EOCONF
+$PUPPET resource service puppetdb ensure=running enable=true provider=systemd
 systemctl restart puppetdb
 
 # Connect PuppetMaster to PuppetDB
