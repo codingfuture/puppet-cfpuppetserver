@@ -109,13 +109,13 @@ class cfpuppetserver::puppetserver (
             max_mb => $memory_max,
         }
 
-        package { 'puppetserver': } ->
-        package { 'puppetdb-termini': } ->
-        package { 'msgpack':
+        package { 'puppetserver': }
+        -> package { 'puppetdb-termini': }
+        -> package { 'msgpack':
             ensure   => present,
             provider => puppetserver_gem,
-        } ->
-        file {'/etc/puppetlabs/puppet/puppetdb.conf':
+        }
+        -> file {'/etc/puppetlabs/puppet/puppetdb.conf':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
@@ -127,53 +127,53 @@ class cfpuppetserver::puppetserver (
                     "https://${host}:${puppetdb_port}"
                 },
             }),
-        } ->
-        file {'/etc/puppetlabs/puppet/puppet.conf':
+        }
+        -> file {'/etc/puppetlabs/puppet/puppet.conf':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
-        } ->
-        file { "${conf_dir}/auth.conf":
+        }
+        -> file { "${conf_dir}/auth.conf":
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppetserver/auth.conf.epp')
-        } ->
-        file { "${conf_dir}/puppetserver.conf":
+        }
+        -> file { "${conf_dir}/puppetserver.conf":
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppetserver/puppetserver.conf.epp', {
                 settings_tune => pick($settings_tune['puppetserver'], {}),
             }),
-        } ->
-        file { "${conf_dir}/webserver.conf":
+        }
+        -> file { "${conf_dir}/webserver.conf":
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => epp('cfpuppetserver/puppetserver/webserver.conf.epp')
-        } ->
-        file {'/etc/puppetlabs/code/hiera.yaml':
+        }
+        -> file {'/etc/puppetlabs/code/hiera.yaml':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0644',
             content => file($global_hiera_config),
-        } ->
-        file {'/etc/puppetlabs/code/hieradata':
+        }
+        -> file {'/etc/puppetlabs/code/hieradata':
             ensure => directory,
             owner  => 'puppet',
             group  => 'puppet',
             mode   => '0755',
-        } ->
-        file {'/etc/puppetlabs/code/hieradata/global.yaml':
+        }
+        -> file {'/etc/puppetlabs/code/hieradata/global.yaml':
             owner   => 'puppet',
             group   => 'puppet',
             mode    => '0755',
             replace => false,
             content => file('cfpuppetserver/global.yaml'),
-        } ->
-        cf_puppetserver{ $service_name:
+        }
+        -> cf_puppetserver{ $service_name:
             ensure       => present,
             service_name => $service_name,
             cpu_weight   => $cpu_weight,
@@ -207,12 +207,12 @@ class cfpuppetserver::puppetserver (
             group   => 'puppet',
             mode    => '0750',
             content => epp('cfpuppetserver/cf_puppetserver_reload.epp')
-        } ->
-        cfnetwork::client_port { 'local:puppet:reload':
+        }
+        -> cfnetwork::client_port { 'local:puppet:reload':
             dst  => $::fqdn,
             user => 'puppet',
-        } ->
-        Cf_puppetserver[$service_name]
+        }
+        -> Cf_puppetserver[$service_name]
 
         #======================================================================
         $cf_r10k_deploy = "${cfsystem::custombin::bin_dir}/cf_r10k_deploy"

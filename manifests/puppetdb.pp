@@ -127,23 +127,23 @@ class cfpuppetserver::puppetdb (
         }
 
         #---
-        package{ 'puppetdb': } ->
-        group{ 'puppetdb': } ->
-        user{ 'puppetdb':
+        package{ 'puppetdb': }
+        -> group{ 'puppetdb': }
+        -> user{ 'puppetdb':
             home => '/opt/puppetlabs/server/data/puppetdb',
             gid  => 'puppetdb',
-        } ->
-        file{ '/var/lib/puppetdb/':
+        }
+        -> file{ '/var/lib/puppetdb/':
             ensure => directory,
             owner  => 'puppetdb',
             group  => 'puppetdb',
             mode   => '0700',
-        } ->
-        cfsystem::puppetpki{ $service_name:
+        }
+        -> cfsystem::puppetpki{ $service_name:
             user    => 'puppetdb',
             pki_dir => '/etc/puppetlabs/puppetdb/pki/',
-        } ->
-        cfpuppetserver::internal::cfpuppetdb { $service_name:
+        }
+        -> cfpuppetserver::internal::cfpuppetdb { $service_name:
             require => [
                 Cfpuppetserver::Internal::Dbaccess[$rwaccess_name],
                 Cfpuppetserver::Internal::Dbaccess[$roaccess_name],

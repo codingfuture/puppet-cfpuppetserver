@@ -69,8 +69,8 @@ class cfpuppetserver::postgresql(
         class { 'cfdb::postgresql':
             default_extensions => false,
             extensions2        => ['contrib'],
-        } ->
-        cfdb::instance{ $cfpuppetserver::cluster:
+        }
+        -> cfdb::instance{ $cfpuppetserver::cluster:
             type          => 'postgresql',
             is_cluster    => $cfpuppetserver::is_cluster,
             is_secondary  => $cfpuppetserver::is_secondary,
