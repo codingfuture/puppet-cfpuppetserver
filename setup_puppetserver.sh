@@ -82,7 +82,7 @@ server = $certname
 ca_server = $certname
 environment = production
 
-environment_data_provider = hiera
+#environment_data_provider = hiera
 
 [master]
 vardir = /opt/puppetlabs/server/data/puppetserver
@@ -202,13 +202,13 @@ echo puppetlabs/code >>/etc/.gitignore
 
 cat >/etc/puppetlabs/code/hiera.yaml <<EOCONF
 ---
-:backends:
-  - yaml
-:hierarchy:
-  - global
-:yaml:
-  # Make sure to use hiera.yaml in environments
-  :datadir: "/etc/puppetlabs/code/hieradata"
+version: 5
+hierarchy:
+  - name: Common
+    path: common.yaml
+defaults:
+  data_hash: yaml_data
+  datadir: data
 # TO BE OVERWRITTEN
 EOCONF
 mkdir -p /etc/puppetlabs/code/hieradata
