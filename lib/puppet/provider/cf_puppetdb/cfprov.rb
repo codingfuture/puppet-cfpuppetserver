@@ -201,7 +201,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
                     '--config ', conf_dir,
                     "-b #{conf_root_dir}/bootstrap.cfg",
                 ].join(' '),
-                'ExecPostStart' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8081 180",
+                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8081 180",
                 'WorkingDirectory' => conf_root_dir,
             },
         }

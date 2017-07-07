@@ -86,7 +86,7 @@ Puppet::Type.type(:cf_puppetserver).provide(
                     "-b '#{bootstrap_path}'",
                 ].join(' '),
                 'ExecReload' => '/bin/kill -HUP $MAINPID',
-                'ExecPostStart' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 180",
+                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 180",
                 'WorkingDirectory' => conf_root_dir,
             },
         }
