@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.11.1](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.11.1)
+- NEW: Puppet 5.x support
+- NEW: Ubuntu Zesty support
+
 ## [0.11.0]
 - Fixed to properly handle PuppetDB-cfdb config
 - Added dependency on cfnetwork:firewall anchor for cfpuppetdb/cfpuppetserver

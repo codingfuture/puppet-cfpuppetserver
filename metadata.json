@@ -19,14 +19,15 @@
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "16.04",
-        "16.10"
+        "16.10",
+        "17.04"
       ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.8.0 <5.0.0"
+      "version_requirement": ">=4.8.0 <6.0.0"
     }
   ],
   "dependencies": [
@@ -44,7 +45,7 @@
     },
     {
       "name": "puppetlabs-puppetserver_gem",
-      "version_requirement": ">= 0.2.0 <0.3.0"
+      "version_requirement": ">= 1.0.0 <2.0.0"
     }
   ],
   "data_provider": "hiera"
