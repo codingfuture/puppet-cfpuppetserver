@@ -26,6 +26,7 @@ class cfpuppetserver::postgresql(
     assert_private();
 
     if $cfpuppetserver::postgresql {
+        # TODO: change to use true fact with fallback to these hardcoded values
         $psql_version = $::facts['operatingsystem'] ? {
             'Debian' => $::facts['operatingsystemrelease'] ? {
                 '8'     => '9.4',
@@ -36,7 +37,8 @@ class cfpuppetserver::postgresql(
                 '15.10' => '9.4',
                 '16.04' => '9.5',
                 '16.10' => '9.5',
-                default => '9.5',
+                '17.04' => '9.6',
+                default => '9.6',
             },
             default  => undef
         }
