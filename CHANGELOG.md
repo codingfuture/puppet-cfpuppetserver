@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.11.2](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.11.2)
+- FIXED: cfpuppetdb/cfpuppetserver.service TimeoutStartSec to 180sec
+
 ## [0.11.1](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.11.1)
 - FIXED: ExecPostStart -> ExecStartPost in systemd files
 - FIXED: to properly wait for cfpuppetserver/cfpuppetdb startup in systemd

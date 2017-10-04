@@ -182,6 +182,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
         
         # Service File
         #==================================================
+        start_timeout = 180
         content_ini = {
             'Unit' => {
                 'Description' => "CF PuppetDB",
@@ -201,8 +202,10 @@ Puppet::Type.type(:cf_puppetdb).provide(
                     '--config ', conf_dir,
                     "-b #{conf_root_dir}/bootstrap.cfg",
                 ].join(' '),
-                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8081 180",
+                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8081 #{start_timeout}",
                 'WorkingDirectory' => conf_root_dir,
+                'TimeoutStartSec' => "#{start_timeout}",
+                'TimeoutStopSec' => "60",
             },
         }
         

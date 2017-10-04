@@ -65,6 +65,8 @@ Puppet::Type.type(:cf_puppetserver).provide(
             "#{conf_root_dir}/services.d/",
             '/opt/puppetlabs/server/apps/puppetserver/config/services.d/'
         ].join(',')
+        
+        start_timeout = 180
 
         content_ini = {
             'Unit' => {
@@ -86,8 +88,10 @@ Puppet::Type.type(:cf_puppetserver).provide(
                     "-b '#{bootstrap_path}'",
                 ].join(' '),
                 'ExecReload' => '/bin/kill -HUP $MAINPID',
-                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 180",
+                'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 #{start_timeout}",
                 'WorkingDirectory' => conf_root_dir,
+                'TimeoutStartSec' => "#{start_timeout}",
+                'TimeoutStopSec' => "60",
             },
         }
         
