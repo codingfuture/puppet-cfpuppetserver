@@ -1,0 +1,8 @@
+{
+  "name": "codingfuture-cfpuppetserver",
+  "version": "0.11.2",
+  "vcs": "git",
+  "package": [
+    "pkg"
+  ]
+}
