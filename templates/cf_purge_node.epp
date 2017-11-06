@@ -1,0 +1,43 @@
+#!/bin/bash
+
+arg="$1"
+node="$2"
+
+
+m_date="$(date '+%Y%m%d')"
+m_safe="yes_I_am_sure_I_want_purge_node_${m_date}"
+
+
+if [ -z "$node" ]; then
+    echo "Usage: $0 $m_safe <node_fqdn>"
+    exit 1
+fi
+
+if [ "$arg" != "$m_safe" ]; then
+    echo "If you are REALLY sure, please run:"
+    echo
+    echo "   $0 $m_safe $node"
+    echo
+    exit 1
+fi
+
+purge_sql='delete from catalogs where certname in (select certname from certnames where deactivated is not null);'
+
+<% if $cfpuppetserver::puppetserver::is_slave { -%>
+echo -n "Please run on Puppet CA: " \
+<% } else { -%>
+echo "Running certificate purge (requires CA node)"
+<% } -%>
+/opt/puppetlabs/bin/puppet node clean $node
+
+echo "De-activating node in PuppetDB"
+/opt/puppetlabs/bin/puppet node deactivate $node
+
+<% if $cfpuppetserver::postgresql { -%>
+echo "Purging deactivated catalogs in PuppetDB (requires direct PostgreSQL access): ${purge_sql}"
+<% } else { -%>
+echo -n "Please run on Puppet PostgreSQL: " \
+<% } -%>
+/db/bin/cfdb_<%= $cfpuppetserver::cluster %>_psql \
+    -d <%= $cfpuppetserver::database %> \
+    -c "${purge_sql}"

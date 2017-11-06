@@ -329,5 +329,12 @@ sudo ${cf_r10k_deploy}
                 ].join("\n"),
             }
         }
+
+        #======================================================================
+        $cf_purge_node = "${cfsystem::custombin::bin_dir}/cf_purge_node"
+        file { $cf_purge_node:
+            mode    => '0700',
+            content => epp('cfpuppetserver/cf_purge_node.epp')
+        }
     }
 }

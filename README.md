@@ -95,6 +95,12 @@ Usage: cf_gen_puppet_client_init <certname> [<cflocation> [<cflocationpool> [<ht
 ~# /opt/codingfuture/bin/cf_puppetserver_reload
 ```
 
+### Manual purge of node trails from infrastructure
+
+```
+~# /opt/codingfuture/bin/cf_purge_node
+```
+
 
 ## Setup
 
