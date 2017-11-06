@@ -1,6 +1,6 @@
 {
   "name": "codingfuture-cfpuppetserver",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "author": "Andrey Galkin",
   "summary": "Alternative PuppetDB+PostgreSQL and PuppetServer setup module",
   "license": "Apache-2.0",
