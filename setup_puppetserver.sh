@@ -50,7 +50,7 @@ if test -z "$codename"; then
     exit 1
 fi
 
-puppetlabs_deb="puppetlabs-release-pc1-${codename}.deb"
+puppetlabs_deb="puppet5-release-${codename}.deb"
 echo "Retrieving $puppetlabs_deb"
 
 
@@ -59,8 +59,8 @@ if ! wget -q https://apt.puppetlabs.com/$puppetlabs_deb; then
         Debian) codename='jessie';;
         Ubuntu) codename='xenial';;
     esac
-    
-    puppetlabs_deb="puppetlabs-release-pc1-${codename}.deb"
+
+    puppetlabs_deb="puppet5-release-${codename}.deb"
     echo "Re-retrieving $puppetlabs_deb"
 
     wget -q https://apt.puppetlabs.com/$puppetlabs_deb || (
@@ -111,7 +111,7 @@ apt-get install \
         -o Dpkg::Options::="--force-confold" \
         git \
         puppet-agent
-    
+
 totalmem=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 1024 ))
 psmem=$(( $totalmem / 4 ))
 

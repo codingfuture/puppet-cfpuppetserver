@@ -55,7 +55,7 @@ if test -z "\\\$codename"; then
     exit 1
 fi
 
-puppetlabs_deb="puppetlabs-release-pc1-\\\${codename}.deb"
+puppetlabs_deb="puppet5-release-\\\${codename}.deb"
 echo "Retrieving \\\$puppetlabs_deb"
 
 if ! wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb; then
@@ -63,8 +63,8 @@ if ! wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.de
         Debian) codename='jessie';;
         Ubuntu) codename='xenial';;
     esac
-    
-    puppetlabs_deb="puppetlabs-release-pc1-\\\${codename}.deb"
+
+    puppetlabs_deb="puppet5-release-\\\${codename}.deb"
     echo "Re-retrieving \\\$puppetlabs_deb"
 
     wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb || (
