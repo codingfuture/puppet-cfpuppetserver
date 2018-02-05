@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 (c) Andrey Galkin
+# Copyright 2016-2018 (c) Andrey Galkin
 #
 
 
@@ -322,7 +322,7 @@ sudo ${cf_r10k_deploy}
                 content => [
                     '# puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                     'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
-		    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
+                    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
                 ].join("\n"),
             }
         } else {
@@ -330,7 +330,7 @@ sudo ${cf_r10k_deploy}
                 content => [
                     'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                     '# puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
-		    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
+                    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
                 ].join("\n"),
             }
         }
