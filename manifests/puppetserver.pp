@@ -18,7 +18,7 @@ class cfpuppetserver::puppetserver (
     Cfsystem::IoWeight
         $io_weight = 100,
     String[1]
-        $activesupport_ver = '4.2.7.1',
+        $activesupport_ver = '4.2.10',
     Enum['off', 'warning', 'error'] $strict = 'warning',
     String[1] $disable_warnings = 'deprecations',
     Hash
@@ -224,10 +224,13 @@ class cfpuppetserver::puppetserver (
             content => epp('cfpuppetserver/deploy.sh.epp'),
         }
 
+        $build_deps = ['build-essential']
+        ensure_packages( $build_deps )
         package {'r10k': provider => 'puppet_gem' }
         package {'activesupport':
             ensure   => $activesupport_ver,
             provider => 'puppet_gem',
+            require  => Package[$build_deps],
         }
         package {'librarian-puppet':
             provider => 'puppet_gem',
@@ -319,6 +322,7 @@ sudo ${cf_r10k_deploy}
                 content => [
                     '# puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                     'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
+		    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
                 ].join("\n"),
             }
         } else {
@@ -326,6 +330,7 @@ sudo ${cf_r10k_deploy}
                 content => [
                     'puppetlabs.services.ca.certificate-authority-service/certificate-authority-service',
                     '# puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service',
+		    'puppetlabs.trapperkeeper.services.watcher.filesystem-watch-service/filesystem-watch-service',
                 ].join("\n"),
             }
         }

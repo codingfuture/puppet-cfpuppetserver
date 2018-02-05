@@ -14,6 +14,7 @@ $max_active_instances = pick(
 jruby-puppet: {
     ruby-load-path: [/opt/puppetlabs/puppet/lib/ruby/vendor_ruby]
     gem-home: /opt/puppetlabs/server/data/puppetserver/jruby-gems
+    gem-path: [${jruby-puppet.gem-home}, "/opt/puppetlabs/server/data/puppetserver/vendored-jruby-gems"]
     master-conf-dir: /etc/puppetlabs/puppet
     master-code-dir: /etc/puppetlabs/code
     master-var-dir: /opt/puppetlabs/server/data/puppetserver

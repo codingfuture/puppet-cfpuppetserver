@@ -68,6 +68,12 @@ Puppet::Type.type(:cf_puppetserver).provide(
         
         start_timeout = 180
 
+	jars = [
+		"/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
+		"/opt/puppetlabs/server/apps/puppetserver/jruby-1_7.jar",
+		"/opt/puppetlabs/server/data/puppetserver/jars/*",
+	].join(':')
+
         content_ini = {
             'Unit' => {
                 'Description' => "CF PuppetServer",
@@ -82,10 +88,11 @@ Puppet::Type.type(:cf_puppetserver).provide(
                     "-Xmx#{heap_mem}m",
                     "-XX:#{meta_param}=#{(meta_mem/2).to_i}m",
                     "-XX:Max#{meta_param}=#{meta_mem}m",
-                    "-cp /opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
+                    "-cp #{jars}",
                     'clojure.main -m puppetlabs.trapperkeeper.main',
                     '--config ', conf_dir,
                     "-b '#{bootstrap_path}'",
+		    '--restart-file /opt/puppetlabs/server/data/puppetserver/restartcounter',
                 ].join(' '),
                 'ExecReload' => '/bin/kill -HUP $MAINPID',
                 'ExecStartPost' => "#{PuppetX::CfSystem::WAIT_SOCKET_BIN} 8140 #{start_timeout}",
