@@ -13,6 +13,8 @@ class cfpuppetserver::postgresql(
         $node_id = undef,
     Optional[String[1]]
         $password = undef,
+    Optional[String[1]]
+        $version = undef,
 
     Integer[1]
         $memory_weight = 100,
@@ -69,6 +71,7 @@ class cfpuppetserver::postgresql(
         }
 
         class { 'cfdb::postgresql':
+            version            => $version,
             default_extensions => false,
             extensions2        => ['contrib'],
         }

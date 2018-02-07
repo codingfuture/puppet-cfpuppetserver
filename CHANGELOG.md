@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.12.0](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.12.0)
 - CHANGED: migrated to Puppet 5
+- CHANGED: to support forced PostgreSQL version
 
 ## [0.11.3](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.11.3)
 - NEW: added cf_purge_node script

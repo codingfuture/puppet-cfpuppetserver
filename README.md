@@ -155,6 +155,7 @@ on the same node.
 * `$port = 5432` - goes directly to `cfdb::instance`
 * `$node_id = undef` - required, if node ID cannot be retrieved from hostname in cluster mode
 * `$password = undef` - force specific password instead of random generated
+* `$version = undef` - version to pass to `cfdb::postgresql`
 * `$memory_weight = 200` - goes directly to `cfdb::instance`
 * `$memory_max = undef` - goes directly to `cfdb::instance`
 * `$cpu_weight = 200` - goes directly to `cfdb::instance`
