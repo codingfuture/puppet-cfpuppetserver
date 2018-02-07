@@ -73,7 +73,8 @@ class cfpuppetserver::postgresql(
         class { 'cfdb::postgresql':
             version            => $version,
             default_extensions => false,
-            extensions2        => ['contrib'],
+            # virtual package since v10
+            # extensions2        => ['contrib'],
         }
         -> cfdb::instance{ $cfpuppetserver::cluster:
             type          => 'postgresql',
