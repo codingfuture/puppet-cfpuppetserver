@@ -140,6 +140,12 @@ class cfpuppetserver::puppetserver (
             mode    => '0644',
             content => file('cfpuppetserver/logback-puppetserver.xml'),
         }
+        -> file { '/etc/puppetlabs/puppetserver/request-logging.xml':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => file('cfpuppetserver/request-logging.xml'),
+        }
         -> file { "${conf_dir}/auth.conf":
             owner   => 'puppet',
             group   => 'puppet',

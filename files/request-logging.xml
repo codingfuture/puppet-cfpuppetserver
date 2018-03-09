@@ -1,0 +1,21 @@
+<configuration>
+  <!--
+    logback-access does not support syslog yet: https://github.com/qos-ch/logback/pull/355
+
+  <appender name="ASYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+    <syslogHost> 127.0.0.1 </syslogHost>
+    <facility> LOCAL2 </facility>
+    <suffixPattern> access-cfpuppetserver: %v:%localPort %h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" %D</suffixPattern>
+  </appender>
+
+  <appender-ref ref="ASYSLOG" />
+  -->
+
+    <appender name="ACCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+          <pattern> [ACCESS] %v:%localPort %h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" %D </pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="ACCESS"/>
+</configuration>

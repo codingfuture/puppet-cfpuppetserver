@@ -144,6 +144,12 @@ class cfpuppetserver::puppetdb (
             mode    => '0644',
             content => file('cfpuppetserver/logback-puppetdb.xml'),
         }
+        -> file { '/etc/puppetlabs/puppetdb/request-logging.xml':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => file('cfpuppetserver/request-logging.xml'),
+        }
         -> file{ '/var/lib/puppetdb/':
             ensure => directory,
             owner  => 'puppetdb',
