@@ -134,6 +134,12 @@ class cfpuppetserver::puppetserver (
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
         }
+        -> file { '/etc/puppetlabs/puppetserver/logback.xml':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => file('cfpuppetserver/logback-puppetserver.xml'),
+        }
         -> file { "${conf_dir}/auth.conf":
             owner   => 'puppet',
             group   => 'puppet',
@@ -179,6 +185,11 @@ class cfpuppetserver::puppetserver (
             cpu_weight   => $cpu_weight,
             io_weight    => $io_weight,
             require      => Anchor['cfnetwork:firewall'],
+        }
+
+        include cfsystem::netsyslog
+        cfnetwork::client_port { 'local:netsyslog:puppetserver':
+            user => 'puppet'
         }
 
         cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }

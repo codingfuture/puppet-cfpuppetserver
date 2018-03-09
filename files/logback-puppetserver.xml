@@ -1,0 +1,25 @@
+<configuration>
+  <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+    <syslogHost> 127.0.0.1 </syslogHost>
+    <facility> LOCAL1 </facility>
+    <suffixPattern> cfpuppetserver: [%thread] %logger %msg</suffixPattern>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+    <encoder>
+      <pattern>%d %-5p [%t] [%c{2}] %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="org.eclipse.jetty" level="INFO"/>
+  <logger name="org.apache.http" level="INFO"/>
+  <logger name="jruby" level="info"/>
+
+  <root level="INFO">
+    <!-- <appender-ref ref="STDOUT" /> -->
+    <appender-ref ref="SYSLOG" />
+  </root>
+</configuration>

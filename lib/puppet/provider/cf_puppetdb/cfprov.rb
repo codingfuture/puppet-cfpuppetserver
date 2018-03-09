@@ -56,7 +56,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
         conf_root_dir = '/etc/puppetlabs/puppetdb'
         conf_dir = "#{conf_root_dir}/conf.d/"
         var_dir = '/var/lib/puppetdb/'
-        pki_dir = '/etc/puppetlabs/puppetdb/pki/puppet'
+        pki_dir = "#{conf_root_dir}/pki/puppet"
         
         var_size = disk_size(var_dir)
         
@@ -77,7 +77,7 @@ Puppet::Type.type(:cf_puppetdb).provide(
         conf = {
             'global' => {
                 'vardir' => var_dir,
-                'logging-config' => '/etc/puppetlabs/puppetdb/logback.xml',
+                'logging-config' => "#{conf_root_dir}/logback.xml",
                 #'update-server' => 'http://updates.puppetlabs.com/check-for-updates',
             },
             'puppetdb' => {
@@ -183,12 +183,18 @@ Puppet::Type.type(:cf_puppetdb).provide(
         # Service File
         #==================================================
         start_timeout = 180
+
+        conf_ver = PuppetX::CfSystem.makeVersion([
+            conf_root_dir,
+        ])
+
         content_ini = {
             'Unit' => {
                 'Description' => "CF PuppetDB",
             },
             'Service' => {
                 '# Package Version' => PuppetX::CfSystem::Util.get_package_version('puppetdb'),
+                '# Config Digest' => conf_ver,
                 'ExecStart' => [
                     '/usr/bin/java',
                     '-XX:OnOutOfMemoryError=kill\s-9\s%%p',

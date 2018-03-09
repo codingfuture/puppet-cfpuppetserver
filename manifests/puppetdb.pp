@@ -53,6 +53,11 @@ class cfpuppetserver::puppetdb (
 
         # Firewall
         #---
+        include cfsystem::netsyslog
+        cfnetwork::client_port { 'local:netsyslog:puppetdb':
+             user => 'puppet'
+        }
+
         cfnetwork::service_port { 'local:puppetdb': }
         cfnetwork::client_port { 'local:puppetdb':
             user => ['root', 'puppet']
@@ -132,6 +137,12 @@ class cfpuppetserver::puppetdb (
         -> user{ 'puppetdb':
             home => '/opt/puppetlabs/server/data/puppetdb',
             gid  => 'puppetdb',
+        }
+        -> file { '/etc/puppetlabs/puppetdb/logback.xml':
+            owner   => 'puppet',
+            group   => 'puppet',
+            mode    => '0644',
+            content => file('cfpuppetserver/logback-puppetdb.xml'),
         }
         -> file{ '/var/lib/puppetdb/':
             ensure => directory,

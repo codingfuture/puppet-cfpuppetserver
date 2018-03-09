@@ -68,11 +68,17 @@ Puppet::Type.type(:cf_puppetserver).provide(
         
         start_timeout = 180
 
-	jars = [
-		"/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
-		"/opt/puppetlabs/server/apps/puppetserver/jruby-1_7.jar",
-		"/opt/puppetlabs/server/data/puppetserver/jars/*",
-	].join(':')
+	    jars = [
+		    "/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
+		    "/opt/puppetlabs/server/apps/puppetserver/jruby-1_7.jar",
+		    "/opt/puppetlabs/server/data/puppetserver/jars/*",
+	    ].join(':')
+
+        conf_ver = PuppetX::CfSystem.makeVersion([
+            conf_root_dir,
+            '/etc/puppetlabs/puppet/puppet.conf',
+            '/etc/puppetlabs/puppet/puppetdb.conf'
+        ])
 
         content_ini = {
             'Unit' => {
@@ -80,6 +86,7 @@ Puppet::Type.type(:cf_puppetserver).provide(
             },
             'Service' => {
                 '# Package Version' => PuppetX::CfSystem::Util.get_package_version('puppetserver'),
+                '# Config Digest' => conf_ver,
                 'ExecStart' => [
                     '/usr/bin/java',
                     '-XX:OnOutOfMemoryError=kill\s-9\s%%p',
