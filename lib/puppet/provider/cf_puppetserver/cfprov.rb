@@ -68,11 +68,12 @@ Puppet::Type.type(:cf_puppetserver).provide(
         
         start_timeout = 180
 
-	    jars = [
-		    "/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
-		    "/opt/puppetlabs/server/apps/puppetserver/jruby-1_7.jar",
-		    "/opt/puppetlabs/server/data/puppetserver/jars/*",
-	    ].join(':')
+        jars = [
+            "/opt/puppetlabs/server/apps/puppetserver/puppet-server-release.jar",
+            #"/opt/puppetlabs/server/apps/puppetserver/jruby-1_7.jar",
+            '/opt/puppetlabs/server/apps/puppetserver/jruby-9k.jar',
+            "/opt/puppetlabs/server/data/puppetserver/jars/*",
+        ].join(':')
 
         conf_ver = PuppetX::CfSystem.makeVersion([
             conf_root_dir,

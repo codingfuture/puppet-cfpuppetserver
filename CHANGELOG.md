@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.12.1](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.12.1)
 - CHANGED: to use syslog for PuppetServer & PuppetDB
+- CHANGED: migrated to Ruby 9K
 - NEW: PuppetServer & PuppetDB to version all configuration files for reload detection
 
 ## [0.12.0](https://github.com/codingfuture/puppet-cfpuppetserver/releases/tag/v0.12.0)
