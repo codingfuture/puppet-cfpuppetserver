@@ -55,7 +55,7 @@ class cfpuppetserver::puppetdb (
         #---
         include cfsystem::netsyslog
         cfnetwork::client_port { 'local:netsyslog:puppetdb':
-             user => 'puppet'
+            user => 'puppet'
         }
 
         cfnetwork::service_port { 'local:puppetdb': }
