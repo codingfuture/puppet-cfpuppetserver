@@ -134,18 +134,6 @@ class cfpuppetserver::puppetserver (
             mode    => '0644',
             content => epp('cfpuppetserver/puppet.conf.epp'),
         }
-        -> file { '/etc/puppetlabs/puppetserver/logback.xml':
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0644',
-            content => file('cfpuppetserver/logback-puppetserver.xml'),
-        }
-        -> file { '/etc/puppetlabs/puppetserver/request-logging.xml':
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0644',
-            content => file('cfpuppetserver/request-logging.xml'),
-        }
         -> file { "${conf_dir}/auth.conf":
             owner   => 'puppet',
             group   => 'puppet',
@@ -193,11 +181,6 @@ class cfpuppetserver::puppetserver (
             require      => Anchor['cfnetwork:firewall'],
         }
 
-        include cfsystem::netsyslog
-        cfnetwork::client_port { 'local:netsyslog:puppetserver':
-            user => 'puppet'
-        }
-
         cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
         cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
@@ -215,6 +198,30 @@ class cfpuppetserver::puppetserver (
                 ensure  => file,
                 content => '',
             }
+        }
+
+        #======================================================================
+        include cflogsink::netsyslog
+
+        if $cflogsink::centralized {
+            cfnetwork::client_port { 'local:netsyslog:puppetserver':
+                user => 'puppet'
+            }
+
+            Package['puppetserver']
+            -> file { '/etc/puppetlabs/puppetserver/logback.xml':
+                owner   => 'puppet',
+                group   => 'puppet',
+                mode    => '0644',
+                content => file('cfpuppetserver/logback-puppetserver.xml'),
+            }
+            -> file { '/etc/puppetlabs/puppetserver/request-logging.xml':
+                owner   => 'puppet',
+                group   => 'puppet',
+                mode    => '0644',
+                content => file('cfpuppetserver/request-logging.xml'),
+            }
+            -> Cf_puppetserver[$service_name]
         }
 
         #======================================================================

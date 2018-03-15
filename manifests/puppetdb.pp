@@ -53,11 +53,6 @@ class cfpuppetserver::puppetdb (
 
         # Firewall
         #---
-        include cfsystem::netsyslog
-        cfnetwork::client_port { 'local:netsyslog:puppetdb':
-            user => 'puppet'
-        }
-
         cfnetwork::service_port { 'local:puppetdb': }
         cfnetwork::client_port { 'local:puppetdb':
             user => ['root', 'puppet']
@@ -138,18 +133,6 @@ class cfpuppetserver::puppetdb (
             home => '/opt/puppetlabs/server/data/puppetdb',
             gid  => 'puppetdb',
         }
-        -> file { '/etc/puppetlabs/puppetdb/logback.xml':
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0644',
-            content => file('cfpuppetserver/logback-puppetdb.xml'),
-        }
-        -> file { '/etc/puppetlabs/puppetdb/request-logging.xml':
-            owner   => 'puppet',
-            group   => 'puppet',
-            mode    => '0644',
-            content => file('cfpuppetserver/request-logging.xml'),
-        }
         -> file{ '/var/lib/puppetdb/':
             ensure => directory,
             owner  => 'puppetdb',
@@ -172,6 +155,31 @@ class cfpuppetserver::puppetdb (
                 user => ['puppet'],
                 dst  => 'updates.puppetlabs.com'
             }
+        }
+
+        include cflogsink
+
+        if $cflogsink::centralized {
+            include cflogsink::netsyslog
+
+            cfnetwork::client_port { 'local:netsyslog:puppetdb':
+                user => 'puppet'
+            }
+
+            Package['puppetdb']
+            -> file { '/etc/puppetlabs/puppetdb/logback.xml':
+                owner   => 'puppet',
+                group   => 'puppet',
+                mode    => '0644',
+                content => file('cfpuppetserver/logback-puppetdb.xml'),
+            }
+            -> file { '/etc/puppetlabs/puppetdb/request-logging.xml':
+                owner   => 'puppet',
+                group   => 'puppet',
+                mode    => '0644',
+                content => file('cfpuppetserver/request-logging.xml'),
+            }
+            -> Cfpuppetserver::Internal::Cfpuppetdb[$service_name]
         }
     } elsif $puppetdb {
         cfnetwork::client_port { 'any:puppetdb':

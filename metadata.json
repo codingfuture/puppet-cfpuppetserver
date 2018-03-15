@@ -44,6 +44,10 @@
       "version_requirement": ">= 0.12.2 < 0.13.0"
     },
     {
+      "name": "codingfuture-cflogsink",
+      "version_requirement": ">= 0.12.0 < 0.13.0"
+    },
+    {
       "name": "puppetlabs-puppetserver_gem",
       "version_requirement": ">= 1.0.0 <2.0.0"
     }
