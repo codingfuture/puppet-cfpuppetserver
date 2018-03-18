@@ -58,7 +58,7 @@ fi
 puppetlabs_deb="puppet5-release-\\\${codename}.deb"
 echo "Retrieving \\\$puppetlabs_deb"
 
-if ! wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb; then
+if ! wget -q https://apt.puppetlabs.com/\\\${puppetlabs_deb}; then
     case "\\\$(lsb_release -is)" in
         Debian) codename='jessie';;
         Ubuntu) codename='xenial';;
@@ -67,13 +67,13 @@ if ! wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.de
     puppetlabs_deb="puppet5-release-\\\${codename}.deb"
     echo "Re-retrieving \\\$puppetlabs_deb"
 
-    wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-\\\${codename}.deb || (
+    wget -q https://apt.puppetlabs.com/\\\${puppetlabs_deb} || (
         echo "Failed to retrieve puppetlabs release for \\\${codename}";
         exit 1
     )
 fi
 
-dpkg -i puppetlabs-release-pc1-\\\${codename}.deb
+dpkg -i \\\${puppetlabs_deb}
 
 mkdir -p /etc/puppetlabs/puppet
 
