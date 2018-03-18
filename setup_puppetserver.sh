@@ -110,7 +110,8 @@ apt-get install \
         -f -y \
         -o Dpkg::Options::="--force-confold" \
         git \
-        puppet-agent
+        puppet-agent \
+        dirmngr
 
 totalmem=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 1024 ))
 psmem=$(( $totalmem / 4 ))

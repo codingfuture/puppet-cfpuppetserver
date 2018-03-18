@@ -96,7 +96,8 @@ apt-get update
 apt-get install \
         -f -y \
         -o Dpkg::Options::="--force-confold" \
-        puppet-agent
+        puppet-agent \
+        dirmngr
 
 PUPPET=/opt/puppetlabs/bin/puppet
     
