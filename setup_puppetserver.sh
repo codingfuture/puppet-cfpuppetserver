@@ -111,6 +111,7 @@ apt-get install \
         -o Dpkg::Options::="--force-confold" \
         git \
         puppet-agent \
+        apt-transport-https \
         dirmngr
 
 totalmem=$(( $(grep MemTotal /proc/meminfo | awk '{print $2}') / 1024 ))

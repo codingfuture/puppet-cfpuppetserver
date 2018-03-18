@@ -5,7 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - FIXED: to use proper Puppet 5 release deb on bootstrap of clients
-- FIXED: to install dirmngr package as part of boostrap script
+- FIXED: to install dirmngr & apt-transport-https package as part of boostrap script
 
 ## 0.12.2 (2018-03-15)
 - CHANGED: to use cflogsink module for centralized logging, if configured

@@ -97,6 +97,7 @@ apt-get install \
         -f -y \
         -o Dpkg::Options::="--force-confold" \
         puppet-agent \
+        apt-transport-https \
         dirmngr
 
 PUPPET=/opt/puppetlabs/bin/puppet
