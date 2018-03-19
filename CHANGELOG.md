@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
+- CHANGED: to load netfilter conntrack modules on bootstrap
 - FIXED: to use proper Puppet 5 release deb on bootstrap of clients
 - FIXED: to install dirmngr & apt-transport-https package as part of boostrap script
 

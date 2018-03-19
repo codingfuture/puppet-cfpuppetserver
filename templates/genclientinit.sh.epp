@@ -105,6 +105,9 @@ PUPPET=/opt/puppetlabs/bin/puppet
 \\\$PUPPET resource service puppet ensure=false enable=false provider=systemd
 systemctl mask puppet
 
+# Make sure to track admin connection, if firewall gets enabled
+/sbin/modprobe -a nf_conntrack nf_conntrack_ipv4 nf_conntrack_ipv6
+
 if ! host maint.example.com > /dev/null; then
     \\\$PUPPET resource host $certname ip=\\\$(/opt/puppetlabs/bin/facter networking.ip)
 fi
