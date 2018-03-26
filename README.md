@@ -106,7 +106,7 @@ Usage: cf_gen_puppet_client_init <certname> [<cflocation> [<cflocationpool> [<ht
 
 ### Initial Puppet Server infrastructure
 
-Either do manually (preferred for self-education) or use bundled [setup script](https://github.com/codingfuture/puppet-cfpuppetserver/blob/master/setup_puppetserver.sh):
+Either do manually (preferred for self-education) or use bundled [setup script](https://codingfuture.net/docs/cfpuppetserver/blob/master/setup_puppetserver.sh):
 ```
 ~# ./setup_puppetserver.sh
 Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation> [<cflocationpool> [<http_proxy=$http_proxy>] ] ] ]
@@ -196,5 +196,5 @@ on the same node.
         * 'idle-timeout-milliseconds' = 600000
 
 
-[cfnetwork]: https://github.com/codingfuture/puppet-cfnetwork
-[cfsystem]: https://github.com/codingfuture/puppet-cfsystem
+[cfnetwork]: https://codingfuture.net/docs/cfnetwork
+[cfsystem]: https://codingfuture.net/docs/cfsystem
