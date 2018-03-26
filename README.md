@@ -114,6 +114,8 @@ Usage: ./setup_puppetserver.sh <r10k_repo_url> [<certname=hostname> [<cflocation
 
 ### Config for Puppet Server node
 
+Up to date installation instructions are available in Puppet Forge: https://forge.puppet.com/codingfuture/cfpuppetserver
+
 Please use [librarian-puppet](https://rubygems.org/gems/librarian-puppet/) to deal with dependencies.
 If this module is used for server setup then librarian-puppet is installed automatically.
 
