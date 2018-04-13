@@ -101,6 +101,18 @@ Usage: cf_gen_puppet_client_init <certname> [<cflocation> [<cflocationpool> [<ht
 ~# /opt/codingfuture/bin/cf_purge_node
 ```
 
+### Restoring default node deactivation and purging behavior
+
+Auto-configuration of CF modules heavily depends PuppetDB info. To protect from accident disasters,
+automatic node info purging is disabled on purpose. It can be restored:
+
+```
+cfpuppetserver::puppetdb::settings_tune:
+    database:
+        'node-ttl': '7d'
+        'node-purge-ttl': '14d'
+```
+
 
 ## Setup
 
