@@ -366,4 +366,12 @@ sudo ${cf_r10k_deploy}
             content => epp('cfpuppetserver/cf_purge_node.epp')
         }
     }
+
+    #---
+    cfsystem::metric { 'puppetserver':
+        type => puppet,
+        info => {
+            fw_service => 'puppet'
+        },
+    }
 }

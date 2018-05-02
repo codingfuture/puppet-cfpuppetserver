@@ -189,4 +189,12 @@ class cfpuppetserver::puppetdb (
     } else {
         fail('$puppetdb must be either true or a destination host')
     }
+
+    #---
+    cfsystem::metric { 'puppetdb':
+        type => puppet,
+        info => {
+            fw_service => 'puppetdb'
+        },
+    }
 }
