@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- CHANGED: updated for Ubuntu Bionic 18.04
+
 ## 1.0.1 (2018-04-13)
 - CHANGED: disabled automatic deactivation & purging of nodes by default
 

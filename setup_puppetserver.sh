@@ -57,7 +57,7 @@ echo "Retrieving $puppetlabs_deb"
 if ! wget -q https://apt.puppetlabs.com/$puppetlabs_deb; then
     case "$(lsb_release -is)" in
         Debian) codename='jessie';;
-        Ubuntu) codename='xenial';;
+        Ubuntu) codename='bionic';;
     esac
 
     puppetlabs_deb="puppet5-release-${codename}.deb"
