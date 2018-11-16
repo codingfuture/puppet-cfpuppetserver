@@ -24,6 +24,9 @@ class cfpuppetserver::postgresql(
         $cpu_weight = 200,
     Cfsystem::IoWeight
         $io_weight = 200,
+
+    Optional[String[1]]
+        $init_db_from = undef,
 ) {
     assert_private();
 
@@ -48,7 +51,7 @@ class cfpuppetserver::postgresql(
             default  => undef
         }
 
-        $init_db_from = empty($psql_version) ? {
+        $def_init_db_from = empty($psql_version) ? {
             true    => '',
             default => "${psql_version}:/var/lib/postgresql/${psql_version}/main/"
         }
@@ -56,7 +59,7 @@ class cfpuppetserver::postgresql(
         $cfdb_settings = {
             secure_cluster => true,
             node_id => $node_id,
-            init_db_from => $init_db_from,
+            init_db_from => pick_default($init_db_from, $def_init_db_from),
         }
 
         $databases = $cfpuppetserver::is_secondary ? {

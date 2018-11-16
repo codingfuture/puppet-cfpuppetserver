@@ -174,6 +174,7 @@ on the same node.
 * `$memory_max = undef` - goes directly to `cfdb::instance`
 * `$cpu_weight = 200` - goes directly to `cfdb::instance`
 * `$io_weight = 200` - goes directly to `cfdb::instance`
+* `$init_db_from = undef` - overrides default init_db_from, if set
 
 ## `cfpuppetserver::puppetdb` class
 
