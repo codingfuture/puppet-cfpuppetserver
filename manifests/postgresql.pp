@@ -33,14 +33,17 @@ class cfpuppetserver::postgresql(
             'Debian' => $::facts['operatingsystemrelease'] ? {
                 '8'     => '9.4',
                 '9'     => '9.6',
-                default => '9.6',
+                '10'    => '11',
+                default => '11',
             },
             'Ubuntu' => $::facts['operatingsystemrelease'] ? {
                 '15.10' => '9.4',
                 '16.04' => '9.5',
                 '16.10' => '9.5',
                 '17.04' => '9.6',
-                default => '9.6',
+                '17.10' => '9.6',
+                '18.04' => '10',
+                default => '10',
             },
             default  => undef
         }
