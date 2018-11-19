@@ -321,12 +321,12 @@ sudo ${cf_r10k_deploy}
         }
 
         if $puppet_git_host {
-            cfnetwork::client_port { 'any:ssh:puppetvcs':
+            cfnetwork::client_port { 'any:cfssh:puppetvcs':
                 dst     => $puppet_git_host,
                 user    => 'root',
                 comment => 'Puppet config git access'
             }
-            cfnetwork::service_port { 'any:ssh:puppetvcs':
+            cfnetwork::service_port { 'any:cfssh:puppetvcs':
                 src     => $puppet_git_host,
                 comment => 'Puppet config git deploy access'
             }

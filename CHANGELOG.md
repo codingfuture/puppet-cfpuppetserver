@@ -5,6 +5,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - CHANGED: updated for Ubuntu 18.04 Bionic support
+- FIXED: to use "cfssh" instead of "ssh" for repo-related firewall configuration
 - NEW: suppot for cfdb::postresql::init_db
 
 ## 1.0.1 (2018-04-13)
