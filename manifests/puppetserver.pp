@@ -181,6 +181,11 @@ class cfpuppetserver::puppetserver (
             require      => Anchor['cfnetwork:firewall'],
         }
 
+        cfnetwork::ipset { 'cfpuppet_clients':
+            type    => 'net',
+            addr    => $::cfpuppetserver::client_hosts + [$::facts['fqdn']],
+            dynamic => true,
+        }
         cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }
         cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
         cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }

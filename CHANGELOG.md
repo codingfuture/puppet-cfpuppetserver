@@ -7,6 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - CHANGED: updated for Ubuntu 18.04 Bionic support
 - FIXED: to use "cfssh" instead of "ssh" for repo-related firewall configuration
 - NEW: suppot for cfdb::postresql::init_db
+- NEW: added cfpuppetserver::client_hosts
 
 ## 1.0.1 (2018-04-13)
 - CHANGED: disabled automatic deactivation & purging of nodes by default

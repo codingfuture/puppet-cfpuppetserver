@@ -25,6 +25,8 @@ class cfpuppetserver (
         $puppetdb_hosts = [],
     Variant[String[1], Array[String[1]]]
         $puppetserver_hosts = [],
+    Variant[String[1], Array[String[1]]]
+        $client_hosts = [], # hosts to whitelist for SSH access
 
     String[1]
         $iface = 'any',

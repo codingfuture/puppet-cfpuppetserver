@@ -152,6 +152,7 @@ example of a complete infrastructure configuration and Vagrant provisioning.
     discovered to be added for PuppetDB access / server_urls
 * `puppetdb_hosts = []` - statically provide PuppetDB hosts (for autodiscovery = false)
 * `puppetserver_hosts = []` - statically provide PuppetServer hosts (for autodiscovery = false)
+* `client_hosts = []` - client hosts to allow access (dynamic ipset `cfpuppet_clients`)
 * `iface = 'any'` - `cfnetwork::iface` name to listen for incoming client connections
 * `cluster = 'cfpuppet'` - `cfdb` cluster to use
 * `database = 'puppetdb' - `cfdb::database` to use in cluster
