@@ -44,6 +44,9 @@ fi
 echo $certname > /etc/hostname
 hostname $certname
 
+apt-get update
+apt-get dist-upgrade -y -f -o Dpkg::Options::="--force-confold"
+
 if ! which lsb-release | read; then
     apt-get install lsb-release
 fi
