@@ -187,11 +187,10 @@ class cfpuppetserver::puppetserver (
             dynamic => true,
         }
         cfnetwork::service_port { "${cfpuppetserver::iface}:puppet": }
-        cfnetwork::client_port { 'any:http:puppetforge': user => 'root' }
-        cfnetwork::client_port { 'any:https:puppetforge': user => 'root' }
+        cfnetwork::client_port { 'any:cfhttp:puppetforge': user => 'root' }
 
         if $cfpuppetserver::allow_update_check {
-            cfnetwork::client_port { 'any:http:puppetdb_version':
+            cfnetwork::client_port { 'any:cfhttp:puppetdb_version':
                 user => ['puppet'],
                 dst  => 'updates.puppetlabs.com'
             }

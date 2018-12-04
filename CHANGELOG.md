@@ -6,6 +6,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## (next)
 - CHANGED: updated for Ubuntu 18.04 Bionic support
 - CHANGED: to force system upgrade on new puppet agent initialization
+- CHANGED: to use cfhttp service in firewall config
 - FIXED: to use "cfssh" instead of "ssh" for repo-related firewall configuration
 - NEW: suppot for cfdb::postresql::init_db
 - NEW: added cfpuppetserver::client_hosts

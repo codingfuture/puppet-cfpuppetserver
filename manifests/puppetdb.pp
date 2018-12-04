@@ -59,7 +59,7 @@ class cfpuppetserver::puppetdb (
         }
 
         if $cfpuppetserver::allow_update_check {
-            cfnetwork::client_port { 'any:http:puppetdb_version':
+            cfnetwork::client_port { 'any:cfhttp:puppetdb_version':
                 user => ['puppetdb'],
                 dst  => 'updates.puppetlabs.com'
             }
@@ -151,7 +151,7 @@ class cfpuppetserver::puppetdb (
         }
 
         if $cfpuppetserver::allow_update_check {
-            cfnetwork::client_port { 'any:http:puppetdb_version':
+            cfnetwork::client_port { 'any:cfhttp:puppetdb_version':
                 user => ['puppet'],
                 dst  => 'updates.puppetlabs.com'
             }
