@@ -112,6 +112,16 @@ authorization: {
             name: "puppetlabs static file content"
         },
         {
+            match-request: {
+                path: "/status/v1/services"
+                type: path
+                method: get
+            }
+            allow-unauthenticated: true
+            sort-order: 500
+            name: "netdata status"
+        },
+        {
             # Allow puppetserver to refresh itself without HUP
             match-request: {
                 path: "/puppet-admin-api/v1"

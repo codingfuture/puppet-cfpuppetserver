@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- FIXED: /status/v1/services API access
+
 ## 1.1.0 (2018-12-09)
 - CHANGED: updated for Ubuntu 18.04 Bionic support
 - CHANGED: to force system upgrade on new puppet agent initialization
