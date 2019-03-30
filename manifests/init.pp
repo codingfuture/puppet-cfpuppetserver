@@ -49,6 +49,7 @@ class cfpuppetserver (
     include cfsystem::custombin
 
     #---
+    $jre = 'openjdk-8-jre-headless'
     include cfpuppetserver::postgresql
     include cfpuppetserver::puppetdb
     include cfpuppetserver::puppetserver

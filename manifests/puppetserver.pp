@@ -109,7 +109,9 @@ class cfpuppetserver::puppetserver (
             max_mb => $memory_max,
         }
 
-        package { 'puppetserver': }
+        ensure_packages([$cfpuppetserver::jre])
+        Package[$cfpuppetserver::jre]
+        -> package { 'puppetserver': }
         -> package { 'puppetdb-termini': }
         -> package { 'msgpack':
             ensure   => present,

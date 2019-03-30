@@ -127,7 +127,9 @@ class cfpuppetserver::puppetdb (
         }
 
         #---
-        package{ 'puppetdb': }
+        ensure_packages([$cfpuppetserver::jre])
+        Package[$cfpuppetserver::jre]
+        -> package{ 'puppetdb': }
         -> group{ 'puppetdb': }
         -> user{ 'puppetdb':
             home => '/opt/puppetlabs/server/data/puppetdb',

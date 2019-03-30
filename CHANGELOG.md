@@ -5,6 +5,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## (next)
 - FIXED: /status/v1/services API access
+- FIXED: to ensure JRE 8 is used for puppetdb/puppetserver
+- CHANGED: aligned puppetdb/puppetserver system unit files with the official ones
 
 ## 1.1.0 (2018-12-09)
 - CHANGED: updated for Ubuntu 18.04 Bionic support
