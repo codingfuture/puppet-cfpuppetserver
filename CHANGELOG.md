@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. This
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## (next)
+- FIXED: to install ca-certificates in client init
+
 ## 1.3.0 (2019-04-14)
 - FIXED: /status/v1/services API access
 - FIXED: to ensure JRE 8 is used for puppetdb/puppetserver

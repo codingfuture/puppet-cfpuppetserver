@@ -51,6 +51,10 @@ if ! which lsb-release | read; then
     apt-get install lsb-release
 fi
 
+if [ ! -d /etc/ca-certificates ]; then
+    apt-get install ca-certificates
+fi
+
 codename=\\\$(lsb_release -cs)
 
 if test -z "\\\$codename"; then
